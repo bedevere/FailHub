@@ -142,14 +142,15 @@ def shop():
                                         numberPotions = int(input("How many potions do you want to buy?\n:>"))
                                         if numberPotions > storeInventory[3]:
                                                 print("THERE ARE NOT THAT MANY POTIONS IN THE STORE!")
+                                                break
                                         posEight = int(dwarf[8])
-                                        if posEight < (cost * numberPotions):
+                                        elif posEight < (cost * numberPotions):
                                                 print("YOU DON'T HAVE THAT KIND OF MONEY!")
                                                 break
                                         else:
-                                            del dwarf[4]
-                                            dwarf.insert(4, storeInvetory[2])
-                                            posEight -= cost
+                                            del dwarf[6]
+                                            dwarf.insert(6, numberPotions)
+                                            posEight -= (cost * numberPotions)
                                             del dwarf[8]
                                             dwarf.insert(8, posEight)
                                         charInventory()
