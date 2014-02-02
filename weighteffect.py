@@ -9,7 +9,12 @@ print("\nBy Paul Ashby")
 
 main = input("\n\nWelcome, would you like to start a new game or exit?\n(new or exit)\n:>")
 
+#------Imported Modules------#
 import random
+#------Defined Variables------#
+wave = 1 
+
+#------Defined Functions------#
 def character_creation():
         print("Character Creation.")
         dwarf = []
@@ -35,7 +40,10 @@ def character_creation():
         print("You will start out with 0 potions.")
         input("Press enter to see your health (HP).")
         dwarf.append(100 + dwarf[1])
-        print("Your initial HP is 100 plus your strength which comes to", dwarf[7], "HP.") 
+        print("Your initial HP is 100 plus your strength which comes to", dwarf[7], "HP.")
+        input("Press enter to see your starting wealth.")
+        dwarf.append(randint(50, 100))
+        print("Your initial wealth is", dwarf[8], "gold.")
         print("Here is what your character looks like so far."
               "\nName:", dwarf[0],
               "\nStrength:", dwarf[1],
@@ -44,16 +52,66 @@ def character_creation():
               "\nDamage:", dwarf[4],
               "\nArmor:", dwarf[5],
               "\nPotions:", dwarf[6],
-              "\nHP:", dwarf[7])
+              "\nHP:", dwarf[7],
+              "\nGold:", dwarf[8])
 
+def shopCommands():
+        print("List of commands:",
+              "list : Shows list of commands.",
+              "shopinv : Prints shop inventory.",
+              "inv : Prints your inventory,",
+              "buy : Asks to buy an item from the shop.",
+              "exit : Exits the shop.")
+
+def shop():
+        storeInventory = []
+        storeInventory.append(randint[1, 20) * wave) #Weapons
+        storeInventory.append(randint[1, 18) * wave) #Armor
+        storeInventory.append(randint[1, 6) * wave) #Potions
+        print("WELCOME TO YE OLD LOCAL SHOPPE")
+        print("Our current inventory consists of the following items:")
+        print("An axe that can do", storeInventory[0], "damage.")
+        print("A set of armor that protects against", storeInventory[1], "points of damage.")
+        print("We also have", storeInventory[2], "health potion(s).")
+        shopCommands()
+        sCommand = input("Please enter a command from the list.")
+        while sCommand != "exit":
+                if sCommand == "list":
+                        shopCommands()
+                elif sCommand == "shopinv":
+                        print("Our current inventory consists of the following items:")
+                        print("An axe that can do", storeInventory[0], "damage.")
+                        print("A set of armor that protects against", storeInventory[1], "points of damage.")
+                        print("We also have", storeInventory[2], "health potion(s).")
+                elif sCommand == "inv":
+                        print("You have the following in your inventory.",
+                              "\nAn axe that can do", dwarf[4], "damage.",
+                              "\nA set of armor that can withstand", dwarf[5], "points of damage.\n",
+                              dwarf[6], "Health potions.\n",
+                              dwarf[8], "Gold.")
+                elif sCommand == "buy":
+                        print("You can buy the following items:")
+                        print("(1) = Axe",
+                              "(2) = Armor",
+                              "(3) = Potions")
+                        purchase = input("Buy an item from the shop by entering the number that coorosponds to that item.")
+                        if purchase == 1:
+                                print("This item will cost", storeInventory[0] * wave, "gold.")
+
+
+#------MAIN LOOP------#
 while main == "new":
-    for i in range(5):
+    for i in range(5): #This loop controls character creation.
         character_creation()
         reroll = input("Do you want to reroll your character? (y/n)\n:>")
         if reroll == "n":
             break
         else:
             print("You can reroll your dwarf", 5 - (i + 1), "more times.")
+    spend = input("Do you want to go to a shop before you fight endless waves of monsters?\n(y/n)\n:>")
+    if spend == "y":
+            shop()
+    
     break
         
             
