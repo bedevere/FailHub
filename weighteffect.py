@@ -15,6 +15,18 @@ import random
 wave = 1 
 
 #------Defined Functions------#
+def charInventory():
+        print("Here is what your character looks like so far."
+              "\nName:", dwarf[0],
+              "\nStrength:", dwarf[1],
+              "\nDexterity:", dwarf[2],
+              "\nInteligence:", dwarf[3],
+              "\nDamage:", dwarf[4],
+              "\nArmor:", dwarf[5],
+              "\nPotions:", dwarf[6],
+              "\nHP:", dwarf[7],
+              "\nGold:", dwarf[8])
+
 def character_creation():
         print("Character Creation.")
         dwarf = []
@@ -44,16 +56,7 @@ def character_creation():
         input("Press enter to see your starting wealth.")
         dwarf.append(randint(50, 100))
         print("Your initial wealth is", dwarf[8], "gold.")
-        print("Here is what your character looks like so far."
-              "\nName:", dwarf[0],
-              "\nStrength:", dwarf[1],
-              "\nDexterity:", dwarf[2],
-              "\nInteligence:", dwarf[3],
-              "\nDamage:", dwarf[4],
-              "\nArmor:", dwarf[5],
-              "\nPotions:", dwarf[6],
-              "\nHP:", dwarf[7],
-              "\nGold:", dwarf[8])
+        charInventory()
 
 def shopCommands():
         print("List of commands:",
@@ -95,8 +98,63 @@ def shop():
                               "(2) = Armor",
                               "(3) = Potions")
                         purchase = input("Buy an item from the shop by entering the number that coorosponds to that item.")
-                        if purchase == 1:
-                                print("This item will cost", storeInventory[0] * wave, "gold.")
+                        if purchase == 1: #buying the axe.
+                                cost = storeInventory[0] * wave
+                                print("This axe will cost", cost, "gold.")
+                                purchase = input("Do you still want to buy this axe?\n(y/n)\n:>")
+                                if purchase == "y":
+                                        posEight = int(dwarf[8])
+                                        if posEight < cost:
+                                                print("YOU DON'T HAVE THAT KIND OF MONEY!")
+                                                break
+                                        else:
+                                            del dwarf[4]
+                                            dwarf.insert(4, storeInvetory[0])
+                                            posEight -= cost
+                                            del dwarf[8]
+                                            dwarf.insert(8, posEight)
+                                        charInventory()
+                                else:
+                                    break
+                        elif purchase == 2: #buying the armor.
+                                cost = storeInventory[1] * wave
+                                print("This armor will cost", cost, "gold.")
+                                purchase = input("Do you still want to buy this armor?\n(y/n)\n:>")
+                                if purchase == "y":
+                                        posEight = int(dwarf[8])
+                                        if posEight < cost:
+                                                print("YOU DON'T HAVE THAT KIND OF MONEY!")
+                                                break
+                                        else:
+                                            del dwarf[5]
+                                            dwarf.insert(5, storeInvetory[1])
+                                            posEight -= cost
+                                            del dwarf[8]
+                                            dwarf.insert(8, posEight)
+                                        charInventory()
+                                else:
+                                    break
+                        elif purchase == 3: #buying some potions.
+                                cost = storeInventory[2] * wave
+                                print("Each potion will cost", cost, "gold.")
+                                purchase = input("Do you still want to buy some potions?\n(y/n)\n:>")
+                                if purchase == "y":
+                                        numberPotions = int(input("How many potions do you want to buy?\n:>"))
+                                        if numberPotions > storeInventory[3]:
+                                                print("THERE ARE NOT THAT MANY POTIONS IN THE STORE!")
+                                        posEight = int(dwarf[8])
+                                        if posEight < (cost * numberPotions):
+                                                print("YOU DON'T HAVE THAT KIND OF MONEY!")
+                                                break
+                                        else:
+                                            del dwarf[4]
+                                            dwarf.insert(4, storeInvetory[2])
+                                            posEight -= cost
+                                            del dwarf[8]
+                                            dwarf.insert(8, posEight)
+                                        charInventory()
+                                else:
+                                    break
 
 
 #------MAIN LOOP------#
