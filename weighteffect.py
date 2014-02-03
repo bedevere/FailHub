@@ -69,6 +69,49 @@ def shop_commands():
               "\nbuy : Asks to buy an item from the shop.",
               "\nexit : Exits the shop.")
 
+def magic(command):
+    #Stats are as follows, 0=Self Knowledge, 1=Will, 2=Concentration 3=Lore
+    #4=Corruption
+    dwarf_magic = [0, 0, 0, 0, 0]
+
+    if(command == 'read dark tome'):#Boom, long slippery slope baby...
+        print("""As you brush the dust from the cover of the dark tome,
+a chill runs up your arm. A glance down reveals the title,
+'Meditations on the Unseen Worlds'. You slowly open the 
+book and begin to read...""")
+
+        print("""It seems to be a journal written by a scholar detailing his
+exploration of these supposed unseen worlds. He goes into great
+detail in his methods and you think you could replicate his
+work. """)
+
+        path = input("""Do you stop reading?
+(yes or no):> """)        
+
+        if(path == 'yes'):
+            print("Scoffing at the madman's claims, you toss the book to the side.")
+            
+        else:
+            print("Drawn on by his compelling claims, you continue to read the book...")
+
+            dwarf_magic = stat_modder(dwarf_magic, 0, 0, 2)
+            print("Following the tome's direction, you determine your mental status...")
+            stat = (dwarf_magic[1] + (20-dwarf_magic[0]))
+            if(stat < 15):
+                print("You think your Will is poor.")
+            elif(15 < stat < 30):
+                print("You think your Will is average.")
+            else:
+                print("You think your Will is great!")
+
+            stat = (dwarf_magic[2] + (20-dwarf_magic[0]))
+            if(stat < 15):
+                print("You think your Concentration is poor.")
+            elif(15 < stat < 30):
+                print("You think your Concentration is average.")
+            else:
+                print("You think your Concentration is great!") 
+
 def shop():
         store_inventory = []
         store_inventory.append(random.randint(1, 20) * wave) #Weapons
