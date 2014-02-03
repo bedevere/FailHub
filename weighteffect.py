@@ -1,6 +1,8 @@
 #Copywrite (c) Paul & John Ashby 2014
 #Weight Effect
-#First Game
+#This game is an RPG that is designed by my brother and myself (Paul).
+#We built this to explore python programing, open source github, and to have some fun.
+#
 
 print("\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\")
 print("\\ \\ \\ \\ Weight Effect \\ \\ \\ \\")
@@ -14,12 +16,14 @@ import random
 #------Defined Variables------#
 wave = 1
 #------Defined Lists------#
-dwarf = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
+
+#dwarf: [name, str, dex, int, dam, arm, pot, hp, gold]
+dwarf = ["0", "0", "0", "0", "0", "0", "0", "0", "0"]
 
 #------Defined Functions------#
-def char_inventory():
+def char_inventory():#Prints out the stats of the player.
         print("Here is what your character looks like so far."
-              "\nName:", dwarf[0],
+              "\n\nName:", dwarf[0],
               "\nStrength:", dwarf[1],
               "\nDexterity:", dwarf[2],
               "\nIntelligence:", dwarf[3],
@@ -61,9 +65,9 @@ def stat_modder(x, y, z, a):
         print('Burn the heretic')
     return stat
 
-def shop_commands():
+def shop_commands():#Lists all the commands for the shopping loop.
         print("List of commands:",
-              "\nlist : Shows list of commands.",
+              "\n\nlist : Shows list of commands.",
               "\nshopinv : Prints shop inventory.",
               "\ninv : Prints your inventory,",
               "\nbuy : Asks to buy an item from the shop.",
@@ -71,9 +75,9 @@ def shop_commands():
 
 def shop():
         store_inventory = []
-        store_inventory.append(random.randint(1, 20) * wave) #Weapons
-        store_inventory.append(random.randint(1, 18) * wave) #Armor
-        store_inventory.append(random.randint(1, 6) * wave) #Potions
+        store_inventory.append(random.randint(1, 20) * wave) #Generates a random value weapon.
+        store_inventory.append(random.randint(1, 18) * wave) #Generates a random value armor.
+        store_inventory.append(random.randint(1, 6) * wave) #Generates a random number of potions.
         print("WELCOME TO YE OLD LOCAL SHOPPE")
         print("Our current inventory consists of the following items:")
         print("An axe that can do", store_inventory[0], "damage.")
@@ -92,7 +96,7 @@ def shop():
                         print("We also have", store_inventory[2], "health potion(s).")
                 elif sCommand == "inv":
                         print("You have the following in your inventory.",
-                              "\nAn axe that can do", dwarf[4], "damage.",
+                              "\n\nAn axe that can do", dwarf[4], "damage.",
                               "\nA set of armor that can withstand", dwarf[5], "points of damage.\n",
                               dwarf[6], "Health potions.\n",
                               dwarf[8], "Gold.")
@@ -166,8 +170,8 @@ def wave_combat():
         monster_wave = ["0", "0", "0", "0", "0", "0", "0"]
         stat_modder(monster_wave, 1, 1, 4)
         print("Prepare yourself, you see", monster_wave[0], "Kobolds charging at you!")
-        while monster[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
-                
+        while monster_wave[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
+            #Do stuff!        
         
         
 #------MAIN LOOP------#
