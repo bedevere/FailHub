@@ -110,12 +110,12 @@ work. """)
 
 
 def shop_commands():#Lists all the commands for the shopping loop.
-        print("List of commands:",
-              "\n\nlist : Shows list of commands.",
-              "\nshopinv : Prints shop inventory.",
-              "\ninv : Prints your inventory,",
-              "\nbuy : Asks to buy an item from the shop.",
-              "\nexit : Exits the shop.")
+        print("\nList of commands:",
+              "\n\tlist : Shows list of commands.",
+              "\n\tshopinv : Prints shop inventory.",
+              "\n\tinv : Prints your inventory,",
+              "\n\tbuy : Asks to buy an item from the shop.",
+              "\n\texit : Exits the shop.")
 
 def shop():
         store_inventory = []
@@ -158,7 +158,7 @@ def shop():
                                         posEight = int(dwarf[8])
                                         if posEight < cost:
                                                 print("YOU DON'T HAVE THAT KIND OF MONEY!")
-                                                break
+                                                input("No purchase made, press enter to continue.")
                                         else:
                                             del dwarf[4]
                                             dwarf.insert(4, store_inventory[0])
@@ -166,8 +166,7 @@ def shop():
                                             del dwarf[8]
                                             dwarf.insert(8, posEight)
                                         char_inventory()
-                                else:
-                                    break
+
                         elif purchase == "2": #buying the armor.
                                 cost = store_inventory[1] * 3 * wave
                                 print("This armor will cost", cost, "gold.")
@@ -176,7 +175,7 @@ def shop():
                                         posEight = int(dwarf[8])
                                         if posEight < cost:
                                                 print("YOU DON'T HAVE THAT KIND OF MONEY!")
-                                                break
+                                                input("No purchase made, press enter to continue.")
                                         else:
                                             del dwarf[5]
                                             dwarf.insert(5, store_inventory[1])
@@ -184,8 +183,7 @@ def shop():
                                             del dwarf[8]
                                             dwarf.insert(8, posEight)
                                         char_inventory()
-                                else:
-                                    break
+                                        
                         elif purchase == "3": #buying some potions.
                                 cost = 25 * wave
                                 print("Each potion will cost", cost, "gold.")
@@ -194,11 +192,11 @@ def shop():
                                         numberPotions = int(input("How many potions do you want to buy?\n:> "))
                                         if numberPotions > store_inventory[2]:
                                                 print("THERE ARE NOT THAT MANY POTIONS IN THE STORE!")
-                                                break
+                                                input("Press enter to go back to the shop menu.")
                                         posEight = int(dwarf[8])
                                         if posEight < (cost * numberPotions):
                                                 print("YOU DON'T HAVE THAT KIND OF MONEY!")
-                                                break
+                                                input("No purchase made, press enter to continue.")
                                         else:
                                             del dwarf[6]
                                             dwarf.insert(6, numberPotions)
@@ -206,8 +204,7 @@ def shop():
                                             del dwarf[8]
                                             dwarf.insert(8, posEight)
                                         char_inventory()
-                                else:
-                                    break
+
 
 
 def command():
@@ -246,7 +243,7 @@ def wave_combat():
         monster_wave = ["0", "0", "0", "0", "0", "0", "0"]
         stat_modder(monster_wave, 1, 1, 4)
         print("Prepare yourself, you see", monster_wave[0], "Kobolds charging at you!")
-        while monster_wave[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
+        #while monster_wave[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
             #Do stuff!        
         
         
