@@ -103,7 +103,7 @@ def shop():
         print("A set of armor that protects against", storeInventory[1], "points of damage.")
         print("We also have", storeInventory[2], "health potion(s).")
         shopCommands()
-        sCommand = input("Please enter a command from the list.")
+        sCommand = "nothing yet"
         while sCommand != "exit":
                 sCommand = input("Please enter a command from the list.")
                 if sCommand == "list":
