@@ -27,6 +27,30 @@ def charInventory():
               "\nHP:", dwarf[7],
               "\nGold:", dwarf[8])
 
+def stat_modder(x, y, z, a):
+#x is the stat list, y is the stat location,
+#z is the new value, a is the command flag
+    stat = x
+
+    if (a == 1):#A 1 value for A mean generate character stats
+        for i in range(1, 4):
+            stat[i] = random.randint(1,20)
+        stat[5] = random.randint(1, 18)
+        stat[7] = 100 + stat[1]
+        stat[8] = random.randint(50, 100)
+
+    elif(a == 2):#A 2 value for A means generate magic stats
+        for i in range(3):
+            stat[i] = random.randint(1, 20)
+        stat[3] = 1
+        stat[4] = 1
+
+    elif(a == 3):#A 3 value for A mean modify a stat
+        stat[y] = z
+    else:
+        print('Burn the heretic')
+    return stat
+
 def character_creation():
         print("Character Creation.")
         dwarf = []
