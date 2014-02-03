@@ -211,7 +211,38 @@ def wave_combat():
         print("Prepare yourself, you see", monster_wave[0], "Kobolds charging at you!")
         while monster[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
                 
+
+def command():
+        services = [1, 1, 0, 0] #Index 0 is a bedroll, 1 is the shop, 2 is the tome, and 3 is a beer seller
+        time_left = 2
         
+        print("The camp is a low, cramped room off of the kobold tunnels.") 
+        
+        if(services[0] == 1):
+                print("You see a drab straw bedroll shoved in the corner.")
+        if(services[1] == 1):
+                print("You see a battered looking tinker standing near a cart of wares.")
+        if(services[2] == 1):
+                print("You see a dark tome lying on a table.")
+        if(services[3] == 1):
+                print("You see a beerseller partying by the fire.")
+        while(time_left > 0):
+                user_command = input("What would you like to do? (shop, read, sleep, party):> "
+        
+                if(user_command == 'shop' and services[1] == 1):
+                        shop()
+                        time_left -= 1
+                elif(user_command == 'sleep' and services[0] == 1):
+                        print("Weary, you collapse onto the bedroll try to sleep")
+                        time_left -= 1
+                elif(user_command == 'read' and services[2] == 1):
+                        magic(read)
+                        time_left -= 1
+                elif(user_command == 'party' and services[3] == 1):
+                        print("Are you insane?")
+                        time_left -= 1
+                else:
+                        print("What?")
         
 #------MAIN LOOP------#
 while main == 'new':
@@ -231,6 +262,9 @@ while main == 'new':
     if spend == "y":
             shop()
     print("Prepare for combat!")
-    wave_combat()
+    x = 1
+    while(x = 1):
+        wave_combat()
+        command()
     
     break
