@@ -227,7 +227,7 @@ def command():
         if(services[3] == 1):
                 print("You see a beerseller partying by the fire.")
         while(time_left > 0):
-                user_command = input("What would you like to do? (shop, read, sleep, party):> "
+                user_command = input("What would you like to do? (shop, read, sleep, party):> ")
         
                 if(user_command == 'shop' and services[1] == 1):
                         shop()
