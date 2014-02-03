@@ -1,11 +1,11 @@
-#Copywrite (c) Paul Ashby 2014
+#Copywrite (c) Paul & John Ashby 2014
 #Weight Effect
 #First Game
 
 print("\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\")
 print("\\ \\ \\ \\ Weight Effect \\ \\ \\ \\")
 print("\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\")
-print("\nBy Paul Ashby")
+print("\nBy Paul & John Ashby")
 
 main = input("\n\nWelcome, would you like to start a new game or exit?\n(new or exit)\n:>")
 
@@ -14,7 +14,7 @@ import random
 #------Defined Variables------#
 wave = 1
 #------Defined Lists------#
-dwarf = []
+dwarf = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
 
 #------Defined Functions------#
 def char_inventory():
@@ -28,37 +28,6 @@ def char_inventory():
               "\nPotions:", dwarf[6],
               "\nHP:", dwarf[7],
               "\nGold:", dwarf[8])
-
-def character_creation():
-        print("Character Creation.")
-        newdwarf = []
-        newdwarf.append(input("Enter a name for your dwarf.\n:>"))
-        print("Your dwarf is named", newdwarf[0], ".")
-        print("\nTime to roll your stats!")
-        input("Press enter to roll for your strength.")
-        newdwarf.append(random.randint(1, 20)) #Str
-        print("You rolled a", newdwarf[1], "for your strength.")
-        input("Press enter to roll for your dexterity.")
-        newdwarf.append(random.randint(1, 20)) #Dex
-        print("You rolled a", newdwarf[2], "for your dexterity.")
-        input("Press enter to roll for your intelligence.")
-        newdwarf.append(random.randint(1, 20)) #Int
-        print("You rolled a", newdwarf[3], "for your inteligence.")
-        input("Press enter to roll for your starting axe damage.")
-        newdwarf.append(random.randint(1, 20)) #Damage
-        print("Your initial axe damage is", newdwarf[4],".")
-        input("Press enter to roll for your initial armor value.")
-        newdwarf.append(random.randint(1, 18)) #Armor
-        print("Your inital armor will resist", newdwarf[5], "points of damage.")
-        newdwarf.append(random.randint(0, 0)) #Potions
-        print("You will start out with 0 potions.")
-        input("Press enter to see your health (HP).")
-        newdwarf.append(100 + newdwarf[1])
-        print("Your initial HP is 100 plus your strength which comes to", newdwarf[7], "HP.")
-        input("Press enter to see your starting wealth.")
-        newdwarf.append(random.randint(50, 100))
-        print("Your initial wealth is", newdwarf[8], "gold.")
-        return newdwarf
 
 def stat_modder(x, y, z, a):
 #x is the stat list, y is the stat location,
@@ -105,7 +74,7 @@ def shop():
         shop_commands()
         sCommand = "nothing yet"
         while sCommand != "exit":
-                sCommand = input("Please enter a command from the list.\n:>")
+                sCommand = input("Please enter a command from the list.\n:> ")
                 if sCommand == "list":
                         shop_commands()
                 elif sCommand == "shopinv":
@@ -124,11 +93,11 @@ def shop():
                         print("(1) = Axe",
                               "\n(2) = Armor",
                               "\n(3) = Potions")
-                        purchase = input("Buy an item from the shop by entering the number that coorosponds to that item.\n:>")
+                        purchase = input("Buy an item from the shop by entering the number that coorosponds to that item.\n:> ")
                         if purchase == "1": #buying the axe.
                                 cost = store_inventory[0] * wave
                                 print("This axe will cost", cost, "gold.")
-                                purchase = input("Do you still want to buy this axe?\n(y/n)\n:>")
+                                purchase = input("Do you still want to buy this axe?\n(y/n)\n:> ")
                                 if purchase == "y":
                                         posEight = int(dwarf[8])
                                         if posEight < cost:
@@ -146,7 +115,7 @@ def shop():
                         elif purchase == "2": #buying the armor.
                                 cost = store_inventory[1] * wave
                                 print("This armor will cost", cost, "gold.")
-                                purchase = input("Do you still want to buy this armor?\n(y/n)\n:>")
+                                purchase = input("Do you still want to buy this armor?\n(y/n)\n:> ")
                                 if purchase == "y":
                                         posEight = int(dwarf[8])
                                         if posEight < cost:
@@ -164,9 +133,9 @@ def shop():
                         elif purchase == "3": #buying some potions.
                                 cost = store_inventory[2] * wave
                                 print("Each potion will cost", cost, "gold.")
-                                purchase = input("Do you still want to buy some potions?\n(y/n)\n:>")
+                                purchase = input("Do you still want to buy some potions?\n(y/n)\n:> ")
                                 if purchase == "y":
-                                        numberPotions = int(input("How many potions do you want to buy?\n:>"))
+                                        numberPotions = int(input("How many potions do you want to buy?\n:> "))
                                         if numberPotions > store_inventory[2]:
                                                 print("THERE ARE NOT THAT MANY POTIONS IN THE STORE!")
                                                 break
@@ -186,16 +155,20 @@ def shop():
 
 
 #------MAIN LOOP------#
-while main == "new":
+while main == 'new':
     for i in range(5): #This loop controls character creation.
-        dwarf = character_creation()
-        reroll = input("Do you want to reroll your character? (y/n)\n:>")
+        name = input("What is the name of your dwarf?\n:> ")
+        stat_modder(dwarf, 0, name, 3)
+        print("Generating stats for your dwarf!")
+        stat_modder(dwarf, 1, 1, 1)
+        char_inventory()
+        reroll = input("Do you want to reroll your character? (y/n)\n:> ")
         if reroll == "n":
             break
         else:
             print("You can reroll your dwarf", 5 - (i + 1), "more times.")
-    char_inventory()
-    spend = input("Do you want to go to a shop before you fight endless waves of monsters?\n(y/n)\n:>")
+            
+    spend = input("Do you want to go to a shop before you fight endless waves of monsters?\n(y/n)\n:> ")
     if spend == "y":
             shop()
     
