@@ -14,7 +14,7 @@ import random
 #------Defined Variables------#
 wave = 1
 #------Defined Lists------#
-dwarf = ["0", "0", "0", "0", "0", "0", "0", "0", "0"]
+dwarf = []
 
 #------Defined Functions------#
 def char_Inventory():
@@ -188,14 +188,13 @@ def shop():
 #------MAIN LOOP------#
 while main == "new":
     for i in range(5): #This loop controls character creation.
-        character_creation()
+        dwarf = character_creation()
         reroll = input("Do you want to reroll your character? (y/n)\n:>")
         if reroll == "n":
             break
         else:
             print("You can reroll your dwarf", 5 - (i + 1), "more times.")
-        dwarf = [character_creation()]
-        charInventory()
+    charInventory()
     spend = input("Do you want to go to a shop before you fight endless waves of monsters?\n(y/n)\n:>")
     if spend == "y":
             shop()
