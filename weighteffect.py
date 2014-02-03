@@ -244,37 +244,43 @@ def command():
                 else:
                         print("What?")
 
-def stance_set():
+def stance_set(stance, stance_number): #stance = string, stance_number = easy variable to modify.
     #stance:[aggressive, balanced, defensive]
-    if stance == 0:
-        print("\nYour current combat stance is 'aggressive', you will",
+    if stance_number == 1:
+        print("\nYour current combat stance is 'Aggressive', you will",
         "\ndeal more damage but you will also take more as a result.")
-    if stance == 1:
-        print("Your current combat stance is 'balanced', you will",
-        "\nnot have a particular advantage but neither will you take",
-        "\na particular penalty.")
-    if stance == 2:
-        print("Your current combat stance is 'defensive', you will",
+    if stance_number == 2:
+        print("\nYour current combat stance is 'Balanced', you will",
+        "\nnot  take any penalties.")
+    if stance_number == 3:
+        print("\nYour current combat stance is 'Defensive', you will",
         "\nbe better ready to defend yourself but may find it difficult",
         "\nto get a good attack in.")
     change = input("Do you want to change your stance?\n(y/n)\n:> ")
     if change == "y":
         print("Here are the stances available to you:",
-        "\n(1) - Aggressive (increased attack)",
-        "\n(2) - Balanced",
-        "\n(3) - Defensive (increased armor)")
-        stance_change = int(input("Enter the number that coorosponds to your choice and press enter."))
-        print("You have changed your combat stance to", stance_change)
-        return (stance_change - 1)
+        "\n(1) - Aggressive (increased attack, decreased armor)",
+        "\n(2) - Balanced (no combat penalties)",
+        "\n(3) - Defensive (increased armor, decreased attack)")
+        stance_number = int(input("Enter the number that coorosponds to your choice and press enter."))
+        if stance_number == 1:
+            stance = "Aggressive"
+        elif stance_number == 2:
+            stance = "Balanced"
+        elif stance_number == 3:
+            stance = "Defensive"
+        print("\nYou have changed your combat stance to:", stance)
+        return stance_set(stance, stance_number)
 
 
 def wave_combat():
         monster_wave = ["0", "0", "0", "0", "0", "0", "0"]
         stat_modder(monster_wave, 1, 1, 4)
         print("Prepare yourself, you see", monster_wave[0], "Kobolds charging at you!")
-        stance = 1
+        stance = "Balanced"
+        stance_number = 2
         while monster_wave[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
-            stance = stance_set()
+            stance = stance_set(stance, stance_number)
             input("Stuff goes here")
         
         
