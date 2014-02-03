@@ -22,7 +22,7 @@ def char_inventory():
               "\nName:", dwarf[0],
               "\nStrength:", dwarf[1],
               "\nDexterity:", dwarf[2],
-              "\nInteligence:", dwarf[3],
+              "\nIntelligence:", dwarf[3],
               "\nDamage:", dwarf[4],
               "\nArmor:", dwarf[5],
               "\nPotions:", dwarf[6],
@@ -35,9 +35,9 @@ def stat_modder(x, y, z, a):
     stat = x
 
     if (a == 1):#A 1 value for A mean generate character stats
-        for i in range(1, 4):
-            stat[i] = random.randint(1,20)
-        stat[5] = random.randint(1, 18)
+        for i in range(1, 5):
+            stat[i] = random.randint(5,20)
+        stat[5] = random.randint(3, 18)
         stat[7] = 100 + stat[1]
         stat[8] = random.randint(50, 100)
 
@@ -47,8 +47,16 @@ def stat_modder(x, y, z, a):
         stat[3] = 1
         stat[4] = 1
 
-    elif(a == 3):#A 3 value for A mean modify a stat
+    elif(a == 3):#A 3 value for A means modify a stat
         stat[y] = z
+    
+    elif(a == 4): #A 4 value for A means generate stats for a monster wave.
+        stat[0] = random.randint((2 * wave), (4 * wave))
+        for i in range(1, 5):
+                stat[i] = random.randint((5 + wave), (15 + wave))
+        stat[5] = random.randint((3 + wave), (12 + wave))
+        stat[6] = random.randint((10 * wave * stat[0]), (25 * wave * stat[0]))
+    
     else:
         print('Burn the heretic')
     return stat
@@ -95,7 +103,7 @@ def shop():
                               "\n(3) = Potions")
                         purchase = input("Buy an item from the shop by entering the number that coorosponds to that item.\n:> ")
                         if purchase == "1": #buying the axe.
-                                cost = store_inventory[0] * wave
+                                cost = store_inventory[0] * 3 * wave
                                 print("This axe will cost", cost, "gold.")
                                 purchase = input("Do you still want to buy this axe?\n(y/n)\n:> ")
                                 if purchase == "y":
@@ -113,7 +121,7 @@ def shop():
                                 else:
                                     break
                         elif purchase == "2": #buying the armor.
-                                cost = store_inventory[1] * wave
+                                cost = store_inventory[1] * 3 * wave
                                 print("This armor will cost", cost, "gold.")
                                 purchase = input("Do you still want to buy this armor?\n(y/n)\n:> ")
                                 if purchase == "y":
@@ -131,7 +139,7 @@ def shop():
                                 else:
                                     break
                         elif purchase == "3": #buying some potions.
-                                cost = store_inventory[2] * wave
+                                cost = 25 * wave
                                 print("Each potion will cost", cost, "gold.")
                                 purchase = input("Do you still want to buy some potions?\n(y/n)\n:> ")
                                 if purchase == "y":
@@ -154,6 +162,14 @@ def shop():
                                     break
 
 
+def wave_combat():
+        monster_wave = ["0", "0", "0", "0", "0", "0", "0"]
+        stat_modder(monster_wave, 1, 1, 4)
+        print("Prepare yourself, you see", monster_wave[0], "Kobolds charging at you!")
+        while monster[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
+                
+        
+        
 #------MAIN LOOP------#
 while main == 'new':
     for i in range(5): #This loop controls character creation.
@@ -171,5 +187,7 @@ while main == 'new':
     spend = input("Do you want to go to a shop before you fight endless waves of monsters?\n(y/n)\n:> ")
     if spend == "y":
             shop()
+    print("Prepare for combat!")
+    wave_combat()
     
     break
