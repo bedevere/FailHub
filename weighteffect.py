@@ -65,13 +65,57 @@ def stat_modder(x, y, z, a):
         print('Burn the heretic')
     return stat
 
+def magic(command):
+    #Stats are as follows, 0=Self Knowledge, 1=Will, 2=Concentration 3=Lore
+    #4=Corruption
+    dwarf_magic = [0, 0, 0, 0, 0]
+
+    if(command == 'read dark tome'):#Boom, long slippery slope baby...
+        print("""As you brush the dust from the cover of the dark tome,
+a chill runs up your arm. A glance down reveals the title,
+'Meditations on the Unseen Worlds'. You slowly open the 
+book and begin to read...""")
+
+        print("""It seems to be a journal written by a scholar detailing his
+exploration of these supposed unseen worlds. He goes into great
+detail in his methods and you think you could replicate his
+work. """)
+
+        path = input("""Do you stop reading?
+(yes or no):> """)        
+
+        if(path == 'yes'):
+            print("Scoffing at the madman's claims, you toss the book to the side.")
+            
+        else:
+            print("Drawn on by his compelling claims, you continue to read the book...")
+
+            dwarf_magic = stat_modder(dwarf_magic, 0, 0, 2)
+            print("Following the tome's direction, you determine your mental status...")
+            stat = (dwarf_magic[1] + (20-dwarf_magic[0]))
+            if(stat < 15):
+                print("You think your Will is poor.")
+            elif(15 < stat < 30):
+                print("You think your Will is average.")
+            else:
+                print("You think your Will is great!")
+
+            stat = (dwarf_magic[2] + (20-dwarf_magic[0]))
+            if(stat < 15):
+                print("You think your Concentration is poor.")
+            elif(15 < stat < 30):
+                print("You think your Concentration is average.")
+            else:
+                print("You think your Concentration is great!") 
+
+
 def shop_commands():#Lists all the commands for the shopping loop.
-        print("List of commands:",
-              "\n\nlist : Shows list of commands.",
-              "\nshopinv : Prints shop inventory.",
-              "\ninv : Prints your inventory,",
-              "\nbuy : Asks to buy an item from the shop.",
-              "\nexit : Exits the shop.")
+        print("\nList of commands:",
+              "\n\tlist : Shows list of commands.",
+              "\n\tshopinv : Prints shop inventory.",
+              "\n\tinv : Prints your inventory,",
+              "\n\tbuy : Asks to buy an item from the shop.",
+              "\n\texit : Exits the shop.")
 
 def shop():
         store_inventory = []
@@ -114,7 +158,7 @@ def shop():
                                         posEight = int(dwarf[8])
                                         if posEight < cost:
                                                 print("YOU DON'T HAVE THAT KIND OF MONEY!")
-                                                break
+                                                input("No purchase made, press enter to continue.")
                                         else:
                                             del dwarf[4]
                                             dwarf.insert(4, store_inventory[0])
@@ -122,8 +166,7 @@ def shop():
                                             del dwarf[8]
                                             dwarf.insert(8, posEight)
                                         char_inventory()
-                                else:
-                                    break
+
                         elif purchase == "2": #buying the armor.
                                 cost = store_inventory[1] * 3 * wave
                                 print("This armor will cost", cost, "gold.")
@@ -132,7 +175,7 @@ def shop():
                                         posEight = int(dwarf[8])
                                         if posEight < cost:
                                                 print("YOU DON'T HAVE THAT KIND OF MONEY!")
-                                                break
+                                                input("No purchase made, press enter to continue.")
                                         else:
                                             del dwarf[5]
                                             dwarf.insert(5, store_inventory[1])
@@ -140,8 +183,7 @@ def shop():
                                             del dwarf[8]
                                             dwarf.insert(8, posEight)
                                         char_inventory()
-                                else:
-                                    break
+                                        
                         elif purchase == "3": #buying some potions.
                                 cost = 25 * wave
                                 print("Each potion will cost", cost, "gold.")
@@ -150,11 +192,11 @@ def shop():
                                         numberPotions = int(input("How many potions do you want to buy?\n:> "))
                                         if numberPotions > store_inventory[2]:
                                                 print("THERE ARE NOT THAT MANY POTIONS IN THE STORE!")
-                                                break
+                                                input("Press enter to go back to the shop menu.")
                                         posEight = int(dwarf[8])
                                         if posEight < (cost * numberPotions):
                                                 print("YOU DON'T HAVE THAT KIND OF MONEY!")
-                                                break
+                                                input("No purchase made, press enter to continue.")
                                         else:
                                             del dwarf[6]
                                             dwarf.insert(6, numberPotions)
@@ -162,15 +204,46 @@ def shop():
                                             del dwarf[8]
                                             dwarf.insert(8, posEight)
                                         char_inventory()
-                                else:
-                                    break
 
+
+
+def command():
+        services = [1, 1, 0, 0] #Index 0 is a bedroll, 1 is the shop, 2 is the tome, and 3 is a beer seller
+        time_left = 2
+        
+        print("The camp is a low, cramped room off of the kobold tunnels.") 
+        
+        if(services[0] == 1):
+                print("You see a drab straw bedroll shoved in the corner.")
+        if(services[1] == 1):
+                print("You see a battered looking tinker standing near a cart of wares.")
+        if(services[2] == 1):
+                print("You see a dark tome lying on a table.")
+        if(services[3] == 1):
+                print("You see a beerseller partying by the fire.")
+        while(time_left > 0):
+                user_command = input("What would you like to do? (shop, read, sleep, party):> ")
+        
+                if (user_command == 'shop' and services[1] == 1):
+                        shop()
+                        time_left -= 1
+                elif (user_command == 'sleep' and services[0] == 1):
+                        print("Weary, you collapse onto the bedroll try to sleep")
+                        time_left -= 1
+                elif (user_command == 'read' and services[2] == 1):
+                        magic(read)
+                        time_left -= 1
+                elif (user_command == 'party' and services[3] == 1):
+                        print("Are you insane?")
+                        time_left -= 1
+                else:
+                        print("What?")
 
 def wave_combat():
         monster_wave = ["0", "0", "0", "0", "0", "0", "0"]
         stat_modder(monster_wave, 1, 1, 4)
         print("Prepare yourself, you see", monster_wave[0], "Kobolds charging at you!")
-        while monster_wave[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
+        #while monster_wave[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
             #Do stuff!        
         
         
