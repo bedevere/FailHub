@@ -12,13 +12,18 @@ print("\nBy Paul & John Ashby")
 main = input("\n\nWelcome, would you like to start a new game or exit?\n(new or exit)\n:>")
 
 #------Imported Modules------#
+
 import random
+
 #------Defined Variables------#
+
 wave = 1
+
 #------Defined Lists------#
 
 #dwarf: [name, str, dex, int, dam, arm, pot, hp, gold]
 dwarf = ["0", "0", "0", "0", "0", "0", "0", "0", "0"]
+
 
 #------Defined Functions------#
 def char_inventory():#Prints out the stats of the player.
@@ -239,12 +244,38 @@ def command():
                 else:
                         print("What?")
 
+def stance_set():
+    #stance:[aggressive, balanced, defensive]
+    if stance == 0:
+        print("\nYour current combat stance is 'aggressive', you will",
+        "\ndeal more damage but you will also take more as a result.")
+    if stance == 1:
+        print("Your current combat stance is 'balanced', you will",
+        "\nnot have a particular advantage but neither will you take",
+        "\na particular penalty.")
+    if stance == 2:
+        print("Your current combat stance is 'defensive', you will",
+        "\nbe better ready to defend yourself but may find it difficult",
+        "\nto get a good attack in.")
+    change = input("Do you want to change your stance?\n(y/n)\n:> ")
+    if change == "y":
+        print("Here are the stances available to you:",
+        "\n(1) - Aggressive (increased attack)",
+        "\n(2) - Balanced",
+        "\n(3) - Defensive (increased armor)")
+        stance_change = int(input("Enter the number that coorosponds to your choice and press enter."))
+        print("You have changed your combat stance to", stance_change)
+        return (stance_change - 1)
+
+
 def wave_combat():
         monster_wave = ["0", "0", "0", "0", "0", "0", "0"]
         stat_modder(monster_wave, 1, 1, 4)
         print("Prepare yourself, you see", monster_wave[0], "Kobolds charging at you!")
-        #while monster_wave[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
-            #Do stuff!        
+        stance = 1
+        while monster_wave[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
+            stance = stance_set()
+            input("Stuff goes here")
         
         
 #------MAIN LOOP------#
