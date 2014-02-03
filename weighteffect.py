@@ -262,6 +262,7 @@ while main == 'new':
     if spend == "y":
             shop()
     print("Prepare for combat!")
+    wave_combat()
     x = 1
     while(x = 1):
         wave_combat()
