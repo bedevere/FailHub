@@ -69,48 +69,6 @@ def shop_commands():
               "\nbuy : Asks to buy an item from the shop.",
               "\nexit : Exits the shop.")
 
-def magic(command):
-    #Stats are as follows, 0=Self Knowledge, 1=Will, 2=Concentration 3=Lore
-    #4=Corruption
-    dwarf_magic = [0, 0, 0, 0, 0]
-
-    if(command == 'read dark tome'):#Boom, long slippery slope baby...
-        print("""As you brush the dust from the cover of the dark tome,
-a chill runs up your arm. A glance down reveals the title,
-'Meditations on the Unseen Worlds'. You slowly open the 
-book and begin to read...""")
-
-        print("""It seems to be a journal written by a scholar detailing his
-exploration of these supposed unseen worlds. He goes into great
-detail in his methods and you think you could replicate his
-work. """)
-
-        path = input("""Do you stop reading?
-(yes or no):> """)        
-
-        if(path == 'yes'):
-            print("Scoffing at the madman's claims, you toss the book to the side.")
-            
-        else:
-            print("Drawn on by his compelling claims, you continue to read the book...")
-
-            dwarf_magic = stat_modder(dwarf_magic, 0, 0, 2)
-            print("Following the tome's direction, you determine your mental status...")
-            stat = (dwarf_magic[1] + (20-dwarf_magic[0]))
-            if(stat < 15):
-                print("You think your Will is poor.")
-            elif(15 < stat < 30):
-                print("You think your Will is average.")
-            else:
-                print("You think your Will is great!")
-
-            stat = (dwarf_magic[2] + (20-dwarf_magic[0]))
-            if(stat < 15):
-                print("You think your Concentration is poor.")
-            elif(15 < stat < 30):
-                print("You think your Concentration is average.")
-            else:
-                print("You think your Concentration is great!") 
 
 def shop():
         store_inventory = []
@@ -212,38 +170,6 @@ def wave_combat():
         while monster[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
                 
 
-def command():
-        services = [1, 1, 0, 0] #Index 0 is a bedroll, 1 is the shop, 2 is the tome, and 3 is a beer seller
-        time_left = 2
-        
-        print("The camp is a low, cramped room off of the kobold tunnels.") 
-        
-        if(services[0] == 1):
-                print("You see a drab straw bedroll shoved in the corner.")
-        if(services[1] == 1):
-                print("You see a battered looking tinker standing near a cart of wares.")
-        if(services[2] == 1):
-                print("You see a dark tome lying on a table.")
-        if(services[3] == 1):
-                print("You see a beerseller partying by the fire.")
-        while(time_left > 0):
-                user_command = input("What would you like to do? (shop, read, sleep, party):> ")
-        
-                if(user_command == 'shop' and services[1] == 1):
-                        shop()
-                        time_left -= 1
-                elif(user_command == 'sleep' and services[0] == 1):
-                        print("Weary, you collapse onto the bedroll try to sleep")
-                        time_left -= 1
-                elif(user_command == 'read' and services[2] == 1):
-                        magic(read)
-                        time_left -= 1
-                elif(user_command == 'party' and services[3] == 1):
-                        print("Are you insane?")
-                        time_left -= 1
-                else:
-                        print("What?")
-        
 #------MAIN LOOP------#
 while main == 'new':
     for i in range(5): #This loop controls character creation.
@@ -263,9 +189,5 @@ while main == 'new':
             shop()
     print("Prepare for combat!")
     wave_combat()
-    x = 1
-    while(x = 1):
-        wave_combat()
-        command()
-    
+   
     break
