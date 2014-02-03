@@ -17,7 +17,7 @@ wave = 1
 dwarf = []
 
 #------Defined Functions------#
-def char_Inventory():
+def char_inventory():
         print("Here is what your character looks like so far."
               "\nName:", dwarf[0],
               "\nStrength:", dwarf[1],
@@ -84,7 +84,7 @@ def stat_modder(x, y, z, a):
         print('Burn the heretic')
     return stat
 
-def shopCommands():
+def shop_commands():
         print("List of commands:",
               "\nlist : Shows list of commands.",
               "\nshopinv : Prints shop inventory.",
@@ -93,26 +93,26 @@ def shopCommands():
               "\nexit : Exits the shop.")
 
 def shop():
-        storeInventory = []
-        storeInventory.append(random.randint(1, 20) * wave) #Weapons
-        storeInventory.append(random.randint(1, 18) * wave) #Armor
-        storeInventory.append(random.randint(1, 6) * wave) #Potions
+        store_inventory = []
+        store_inventory.append(random.randint(1, 20) * wave) #Weapons
+        store_inventory.append(random.randint(1, 18) * wave) #Armor
+        store_inventory.append(random.randint(1, 6) * wave) #Potions
         print("WELCOME TO YE OLD LOCAL SHOPPE")
         print("Our current inventory consists of the following items:")
-        print("An axe that can do", storeInventory[0], "damage.")
-        print("A set of armor that protects against", storeInventory[1], "points of damage.")
-        print("We also have", storeInventory[2], "health potion(s).")
-        shopCommands()
+        print("An axe that can do", store_inventory[0], "damage.")
+        print("A set of armor that protects against", store_inventory[1], "points of damage.")
+        print("We also have", store_inventory[2], "health potion(s).")
+        shop_commands()
         sCommand = "nothing yet"
         while sCommand != "exit":
-                sCommand = input("Please enter a command from the list.")
+                sCommand = input("Please enter a command from the list.\n:>")
                 if sCommand == "list":
-                        shopCommands()
+                        shop_commands()
                 elif sCommand == "shopinv":
                         print("Our current inventory consists of the following items:")
-                        print("An axe that can do", storeInventory[0], "damage.")
-                        print("A set of armor that protects against", storeInventory[1], "points of damage.")
-                        print("We also have", storeInventory[2], "health potion(s).")
+                        print("An axe that can do", store_inventory[0], "damage.")
+                        print("A set of armor that protects against", store_inventory[1], "points of damage.")
+                        print("We also have", store_inventory[2], "health potion(s).")
                 elif sCommand == "inv":
                         print("You have the following in your inventory.",
                               "\nAn axe that can do", dwarf[4], "damage.",
@@ -122,11 +122,11 @@ def shop():
                 elif sCommand == "buy":
                         print("You can buy the following items:")
                         print("(1) = Axe",
-                              "(2) = Armor",
-                              "(3) = Potions")
-                        purchase = input("Buy an item from the shop by entering the number that coorosponds to that item.")
+                              "\n(2) = Armor",
+                              "\n(3) = Potions")
+                        purchase = input("Buy an item from the shop by entering the number that coorosponds to that item.\n:>")
                         if purchase == "1": #buying the axe.
-                                cost = storeInventory[0] * wave
+                                cost = store_inventory[0] * wave
                                 print("This axe will cost", cost, "gold.")
                                 purchase = input("Do you still want to buy this axe?\n(y/n)\n:>")
                                 if purchase == "y":
@@ -136,15 +136,15 @@ def shop():
                                                 break
                                         else:
                                             del dwarf[4]
-                                            dwarf.insert(4, storeInvetory[0])
+                                            dwarf.insert(4, store_inventory[0])
                                             posEight -= cost
                                             del dwarf[8]
                                             dwarf.insert(8, posEight)
-                                        charInventory()
+                                        char_inventory()
                                 else:
                                     break
                         elif purchase == "2": #buying the armor.
-                                cost = storeInventory[1] * wave
+                                cost = store_inventory[1] * wave
                                 print("This armor will cost", cost, "gold.")
                                 purchase = input("Do you still want to buy this armor?\n(y/n)\n:>")
                                 if purchase == "y":
@@ -154,20 +154,20 @@ def shop():
                                                 break
                                         else:
                                             del dwarf[5]
-                                            dwarf.insert(5, storeInvetory[1])
+                                            dwarf.insert(5, store_inventory[1])
                                             posEight -= cost
                                             del dwarf[8]
                                             dwarf.insert(8, posEight)
-                                        charInventory()
+                                        char_inventory()
                                 else:
                                     break
                         elif purchase == "3": #buying some potions.
-                                cost = storeInventory[2] * wave
+                                cost = store_inventory[2] * wave
                                 print("Each potion will cost", cost, "gold.")
                                 purchase = input("Do you still want to buy some potions?\n(y/n)\n:>")
                                 if purchase == "y":
                                         numberPotions = int(input("How many potions do you want to buy?\n:>"))
-                                        if numberPotions > storeInventory[3]:
+                                        if numberPotions > store_inventory[2]:
                                                 print("THERE ARE NOT THAT MANY POTIONS IN THE STORE!")
                                                 break
                                         posEight = int(dwarf[8])
@@ -180,7 +180,7 @@ def shop():
                                             posEight -= (cost * numberPotions)
                                             del dwarf[8]
                                             dwarf.insert(8, posEight)
-                                        charInventory()
+                                        char_inventory()
                                 else:
                                     break
 
@@ -194,7 +194,7 @@ while main == "new":
             break
         else:
             print("You can reroll your dwarf", 5 - (i + 1), "more times.")
-    charInventory()
+    char_inventory()
     spend = input("Do you want to go to a shop before you fight endless waves of monsters?\n(y/n)\n:>")
     if spend == "y":
             shop()
