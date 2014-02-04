@@ -262,7 +262,7 @@ def stance_set(stance, stance_number): #stance = string, stance_number = easy va
         "\n(1) - Aggressive (increased attack, decreased armor)",
         "\n(2) - Balanced (no combat penalties)",
         "\n(3) - Defensive (increased armor, decreased attack)")
-        stance_number = int(input("Enter the number that coorosponds to your choice and press enter."))
+        stance_number = int(input("Enter the number that coorosponds to your choice and press enter.\n:> "))
         if stance_number == 1:
             stance = "Aggressive"
         elif stance_number == 2:
@@ -277,10 +277,10 @@ def wave_combat():
         monster_wave = ["0", "0", "0", "0", "0", "0", "0"]
         stat_modder(monster_wave, 1, 1, 4)
         print("Prepare yourself, you see", monster_wave[0], "Kobolds charging at you!")
-        stance = "Balanced"
-        stance_number = 2
+        stance = ["Balanced", 2]
+        stance_number = stance[1]
         while monster_wave[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
-            stance = stance_set(stance, stance_number)
+            stance = [stance_set(stance, stance_number)]
             input("Stuff goes here")
         
         
