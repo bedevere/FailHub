@@ -77,17 +77,17 @@ def magic(command):
 
     if(command == 'read dark tome'):#Boom, long slippery slope baby...
         print("""As you brush the dust from the cover of the dark tome,
-a chill runs up your arm. A glance down reveals the title,
-'Meditations on the Unseen Worlds'. You slowly open the 
-book and begin to read...""")
+        a chill runs up your arm. A glance down reveals the title,
+        'Meditations on the Unseen Worlds'. You slowly open the 
+        book and begin to read...""")
 
         print("""It seems to be a journal written by a scholar detailing his
-exploration of these supposed unseen worlds. He goes into great
-detail in his methods and you think you could replicate his
-work. """)
+        exploration of these supposed unseen worlds. He goes into great
+        detail in his methods and you think you could replicate his
+        work. """)
 
         path = input("""Do you stop reading?
-(yes or no):> """)        
+        (yes or no):> """)        
 
         if(path == 'yes'):
             print("Scoffing at the madman's claims, you toss the book to the side.")
@@ -121,6 +121,7 @@ def shop_commands():#Lists all the commands for the shopping loop.
               "\n\tinv : Prints your inventory,",
               "\n\tbuy : Asks to buy an item from the shop.",
               "\n\texit : Exits the shop.")
+              
 
 def shop():
         store_inventory = []
@@ -243,6 +244,7 @@ def command():
                         time_left -= 1
                 else:
                         print("What?")
+                        
 
 def stance_set(oldstance): #takes an argument from previous function and names it 'oldstance'.
     #Looks at the argument list to see which stance the character is in and informs the player.
@@ -279,9 +281,26 @@ def stance_set(oldstance): #takes an argument from previous function and names i
         
     else:
         return oldstance #returns the original stance
+        
+        
+def initiative(monsters):
+    monster_initiative = random.randint(1 + monsters[2], 20 + monsters[2])
+    player_initiative = random.randint(1 + dwarf[2], 20 + dwarf[2])
+    print("Rolling initiative!")
+    print("\nYou rolled a",player_initiative, "and the Kobolds rolled a", monster_initiative)
+    if monster_initiative >= player_initiative:
+        print("Looks like the Kobolds are attacking first, brace yourself.")
+        round = 2 #Sets round flag so monsters do damage first.
+        return round
+
+    else:
+        print("You attack first!")
+        round = 1 #Sets round flag so player does damage first.
+        return round
 
 
 def combat():
+        #monsters: [num, str, dex, int, dam, arm, hp]
         monsters = ["0", "0", "0", "0", "0", "0", "0"]
         stat_modder(monsters, 1, 1, 4)
         print("Prepare yourself, you see", monsters[0], "Kobolds charging at you!")
@@ -289,7 +308,11 @@ def combat():
         
         while monsters[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
             stance = stance_set(stance) #Allows the player to change their stance before each round of combat.
-            
+            round = initiative(monsters) #Rolls for initiative to see who goes first.
+            print(round)
+                
+                    
+                    
             input("Stuff goes here")
         
         
