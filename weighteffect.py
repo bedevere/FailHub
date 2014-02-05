@@ -117,7 +117,7 @@ work. """)
 def shop_commands():#Lists all the commands for the shopping loop.
         print("\nList of commands:",
               "\n\tlist : Shows list of commands.",
-              "\n\tshopinv : Prints shop inventory.",
+              "\n\tshop : Prints shop inventory.",
               "\n\tinv : Prints your inventory,",
               "\n\tbuy : Asks to buy an item from the shop.",
               "\n\texit : Exits the shop.")
@@ -138,7 +138,7 @@ def shop():
                 sCommand = input("Please enter a command from the list.\n:> ")
                 if sCommand == "list":
                         shop_commands()
-                elif sCommand == "shopinv":
+                elif sCommand == "shop":
                         print("Our current inventory consists of the following items:")
                         print("An axe that can do", store_inventory[0], "damage.")
                         print("A set of armor that protects against", store_inventory[1], "points of damage.")
@@ -244,43 +244,52 @@ def command():
                 else:
                         print("What?")
 
-def stance_set(stance, stance_number): #stance = string, stance_number = easy variable to modify.
-    #stance:[aggressive, balanced, defensive]
-    if stance_number == 1:
+def stance_set(oldstance): #takes an argument from previous function and names it 'oldstance'.
+    #Looks at the argument list to see which stance the character is in and informs the player.
+    if oldstance[0] == "Aggressive":
         print("\nYour current combat stance is 'Aggressive', you will",
         "\ndeal more damage but you will also take more as a result.")
-    if stance_number == 2:
+    if oldstance[0] == "Balanced":
         print("\nYour current combat stance is 'Balanced', you will",
-        "\nnot  take any penalties.")
-    if stance_number == 3:
+        "\nnot take any penalties.")
+    if oldstance[0] == "Defensive":
         print("\nYour current combat stance is 'Defensive', you will",
         "\nbe better ready to defend yourself but may find it difficult",
         "\nto get a good attack in.")
-    change = input("Do you want to change your stance?\n(y/n)\n:> ")
+
+    change = input("\nDo you want to change your stance?\n(y/n)\n:> ")
+    
     if change == "y":
-        print("Here are the stances available to you:",
+        print("\nHere are the stances available to you:",
         "\n(1) - Aggressive (increased attack, decreased armor)",
         "\n(2) - Balanced (no combat penalties)",
         "\n(3) - Defensive (increased armor, decreased attack)")
-        stance_number = int(input("Enter the number that coorosponds to your choice and press enter.\n:> "))
-        if stance_number == 1:
-            stance = "Aggressive"
-        elif stance_number == 2:
-            stance = "Balanced"
-        elif stance_number == 3:
-            stance = "Defensive"
-        print("\nYou have changed your combat stance to:", stance)
-        return stance_set(stance, stance_number)
+        
+        newstance_number = int(input("Enter the number that coorosponds to your choice and press enter.\n:> "))
+        
+        if newstance_number == 1:
+            newstance = ["Aggressive"]
+        elif newstance_number == 2:
+            newstance = ["Balanced"]
+        elif newstance_number == 3:
+            newstance = ["Defensive"]
+        print("\nYou have changed your combat stance to:", newstance[0])
+        
+        return newstance #returns the new stance
+        
+    else:
+        return oldstance #returns the original stance
 
 
-def wave_combat():
-        monster_wave = ["0", "0", "0", "0", "0", "0", "0"]
-        stat_modder(monster_wave, 1, 1, 4)
-        print("Prepare yourself, you see", monster_wave[0], "Kobolds charging at you!")
-        stance = ["Balanced", 2]
-        stance_number = stance[1]
-        while monster_wave[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
-            stance = [stance_set(stance, stance_number)]
+def combat():
+        monsters = ["0", "0", "0", "0", "0", "0", "0"]
+        stat_modder(monsters, 1, 1, 4)
+        print("Prepare yourself, you see", monsters[0], "Kobolds charging at you!")
+        stance = ["Balanced"] #Sets the initial stance.
+        
+        while monsters[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
+            stance = stance_set(stance) #Allows the player to change their stance before each round of combat.
+            
             input("Stuff goes here")
         
         
@@ -302,6 +311,6 @@ while main == 'new':
     if spend == "y":
             shop()
     print("Prepare for combat!")
-    wave_combat()
+    combat()
     
     break
