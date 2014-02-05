@@ -290,30 +290,109 @@ def initiative(monsters):
     print("\nYou rolled a",player_initiative, "and the Kobolds rolled a", monster_initiative)
     if monster_initiative >= player_initiative:
         print("Looks like the Kobolds are attacking first, brace yourself.")
-        round = 2 #Sets round flag so monsters do damage first.
-        return round
+        turn = 2 #Sets round flag so monsters do damage first.
+        return turn
 
     else:
         print("You attack first!")
-        round = 1 #Sets round flag so player does damage first.
-        return round
+        turn = 1 #Sets round flag so player does damage first.
+        return turn
 
+def player_attack(player_damage, number_monsters, total_monster_hp, monster_armor, stance):
+    new_damage = player_damage    
+    new_damage += dwarf[4] - monster_armor #Damage equals char damage - monster armor.
+        
+    if stance == "Aggressive": #Aggressive adds the character strength to the damage.
+        stance_damage = dwarf[1] 
+    elif stance == "Balanced": #Balanced adds the character dexterity/4 to the damage.
+        stance_damage = dwarf[2] / 4
+    elif stance == "Defensive": #Defensive adds the difference of the characters str and dex to the total damage.
+        stance_damage = dwarf[1] - dwarf[2]
+        
+    new_damage += stance_damage #Adds/subtracts stance damage to new_damage.
+    min_monster_hp = total_monster_hp / number_monsters #Builds benchmark for min damage to kill monster.
+    print("Testing min_monster_hp var.")
+    print(min_monster_hp)
+    input()
+    
+    while new_damage >= min_monster_hp:
+        number_monsters -= 1
+        new_damage -= min_monster_hp
+        total_monster_hp -= min_monster_hp
+        if number_monsters <= 0:
+                break
+        
+    if new_damage < min_monster_hp:
+        new_values = [new_damage, number_monsters, total_monster_hp]
+        return new_values
+
+
+def monster_attack(monster_damage, player_armor, player_hp, stance):
+    if stance == "Defensive":
+        monster_damage -= player_armor * 2
+    else:
+        monster_damage -= player_armor
+    if monster_damage <= 0:
+        print("The Kobolds attack doing", monster_damage, "damage!")
+        print("You take no damage from the attack.")
+        return player_hp
+    else:
+        player_hp -= monster_damage
+        print("The Kobolds attack doing", monster_damage, "damage!")
+        print("You have", player_hp, "health left.")
+        if player_hp <= 0:
+            input("You have perished in combat!\n\nPress enter to continue.")
+            exit()
+        else:
+            return player_hp
+    
 
 def combat():
-        #monsters: [num, str, dex, int, dam, arm, hp]
-        monsters = ["0", "0", "0", "0", "0", "0", "0"]
-        stat_modder(monsters, 1, 1, 4)
-        print("Prepare yourself, you see", monsters[0], "Kobolds charging at you!")
-        stance = ["Balanced"] #Sets the initial stance.
-        
-        while monsters[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
-            stance = stance_set(stance) #Allows the player to change their stance before each round of combat.
-            round = initiative(monsters) #Rolls for initiative to see who goes first.
-            print(round)
+    #monsters: [num, str, dex, int, dam, arm, hp]
+    monsters = ["0", "0", "0", "0", "0", "0", "0"]
+    stat_modder(monsters, 1, 1, 4)
+    print("Prepare yourself, you see", monsters[0], "Kobolds charging at you!")
+    stance = ["Balanced"] #Sets the initial stance.
+    player_damage_counter = 0 #Keeps track of how much damage the player does.
+    current_player_hp = dwarf[7]    
+    while monsters[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
+        stance = stance_set(stance) #Allows the player to change their stance before each round of combat.
+        turn = initiative(monsters) #Rolls for initiative to see who goes first.
+        check_move = 1 #Flag that notifies loop that player has or has not gone.
+        if turn == 1:
+            result = player_attack(player_damage_counter, monsters[0], monsters[6], monsters[5], stance[0])
+            input(result)
+            player_damage_counter = result[0] #Updates total player damage. 
+            monsters[0] -= result[1] #Updates monsters left.
+            monsters[6] -= result[2] #Updates total monster HP.
+            print("You have slain", result[1], "Kobolds this round! There are", monsters[0], "left.")
+            if monsters[0] <= 0:
+                print("You have slain all the Kobolds!")
+                print("Congradulations!")
+                break
+            turn = 2
+            check_move = 0 #lets loop know player has already moved this round.
+                
+        elif turn == 2:
+            current_player_hp = monster_attack(monsters[4], dwarf[5], current_player_hp, stance)
+            print("Test:: player hp =", current_player_hp)
+            input()
+            
+        if check_move == 1:
+            result = player_attack(player_damage_counter, monsters[0], monsters[6], monsters[5], stance[0])
+            player_damage_counter = result[0] #Updates total player damage. 
+            monsters[0] -= result[1] #Updates monsters left.
+            monsters[6] -= result[2] #Updates total monster HP.
+            print("You have slain", result[1], "Kobolds this round! There are", monsters[0], "left.")
+            if monsters[0] <= 0:
+                print("You have slain all the Kobolds!")
+                print("Congradulations!")
+                break
+                    
                 
                     
                     
-            input("Stuff goes here")
+        input("Stuff goes here (end of combat loop)")
         
         
 #------MAIN LOOP------#
