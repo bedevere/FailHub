@@ -12,13 +12,18 @@ print("\nBy Paul & John Ashby")
 main = input("\n\nWelcome, would you like to start a new game or exit?\n(new or exit)\n:>")
 
 #------Imported Modules------#
+
 import random
+
 #------Defined Variables------#
+
 wave = 1
+
 #------Defined Lists------#
 
 #dwarf: [name, str, dex, int, dam, arm, pot, hp, gold]
 dwarf = ["0", "0", "0", "0", "0", "0", "0", "0", "0"]
+
 
 #------Defined Functions------#
 def char_inventory():#Prints out the stats of the player.
@@ -72,17 +77,17 @@ def magic(command):
 
     if(command == 'read dark tome'):#Boom, long slippery slope baby...
         print("""As you brush the dust from the cover of the dark tome,
-a chill runs up your arm. A glance down reveals the title,
-'Meditations on the Unseen Worlds'. You slowly open the 
-book and begin to read...""")
+        a chill runs up your arm. A glance down reveals the title,
+        'Meditations on the Unseen Worlds'. You slowly open the 
+        book and begin to read...""")
 
         print("""It seems to be a journal written by a scholar detailing his
-exploration of these supposed unseen worlds. He goes into great
-detail in his methods and you think you could replicate his
-work. """)
+        exploration of these supposed unseen worlds. He goes into great
+        detail in his methods and you think you could replicate his
+        work. """)
 
         path = input("""Do you stop reading?
-(yes or no):> """)        
+        (yes or no):> """)        
 
         if(path == 'yes'):
             print("Scoffing at the madman's claims, you toss the book to the side.")
@@ -112,10 +117,11 @@ work. """)
 def shop_commands():#Lists all the commands for the shopping loop.
         print("\nList of commands:",
               "\n\tlist : Shows list of commands.",
-              "\n\tshopinv : Prints shop inventory.",
+              "\n\tshop : Prints shop inventory.",
               "\n\tinv : Prints your inventory,",
               "\n\tbuy : Asks to buy an item from the shop.",
               "\n\texit : Exits the shop.")
+              
 
 def shop():
         store_inventory = []
@@ -133,7 +139,7 @@ def shop():
                 sCommand = input("Please enter a command from the list.\n:> ")
                 if sCommand == "list":
                         shop_commands()
-                elif sCommand == "shopinv":
+                elif sCommand == "shop":
                         print("Our current inventory consists of the following items:")
                         print("An axe that can do", store_inventory[0], "damage.")
                         print("A set of armor that protects against", store_inventory[1], "points of damage.")
@@ -238,13 +244,155 @@ def command():
                         time_left -= 1
                 else:
                         print("What?")
+                        
 
-def wave_combat():
-        monster_wave = ["0", "0", "0", "0", "0", "0", "0"]
-        stat_modder(monster_wave, 1, 1, 4)
-        print("Prepare yourself, you see", monster_wave[0], "Kobolds charging at you!")
-        #while monster_wave[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
-            #Do stuff!        
+def stance_set(oldstance): #takes an argument from previous function and names it 'oldstance'.
+    #Looks at the argument list to see which stance the character is in and informs the player.
+    if oldstance[0] == "Aggressive":
+        print("\nYour current combat stance is 'Aggressive', you will",
+        "\ndeal more damage but you will also take more as a result.")
+    if oldstance[0] == "Balanced":
+        print("\nYour current combat stance is 'Balanced', you will",
+        "\nnot take any penalties.")
+    if oldstance[0] == "Defensive":
+        print("\nYour current combat stance is 'Defensive', you will",
+        "\nbe better ready to defend yourself but may find it difficult",
+        "\nto get a good attack in.")
+
+    change = input("\nDo you want to change your stance?\n(y/n)\n:> ")
+    
+    if change == "y":
+        print("\nHere are the stances available to you:",
+        "\n(1) - Aggressive (increased attack, decreased armor)",
+        "\n(2) - Balanced (no combat penalties)",
+        "\n(3) - Defensive (increased armor, decreased attack)")
+        
+        newstance_number = int(input("Enter the number that coorosponds to your choice and press enter.\n:> "))
+        
+        if newstance_number == 1:
+            newstance = ["Aggressive"]
+        elif newstance_number == 2:
+            newstance = ["Balanced"]
+        elif newstance_number == 3:
+            newstance = ["Defensive"]
+        print("\nYou have changed your combat stance to:", newstance[0])
+        
+        return newstance #returns the new stance
+        
+    else:
+        return oldstance #returns the original stance
+        
+        
+def initiative(monsters):
+    monster_initiative = random.randint(1 + monsters[2], 20 + monsters[2])
+    player_initiative = random.randint(1 + dwarf[2], 20 + dwarf[2])
+    print("Rolling initiative!")
+    print("\nYou rolled a",player_initiative, "and the Kobolds rolled a", monster_initiative)
+    if monster_initiative >= player_initiative:
+        print("Looks like the Kobolds are attacking first, brace yourself.")
+        turn = 2 #Sets round flag so monsters do damage first.
+        return turn
+
+    else:
+        print("You attack first!")
+        turn = 1 #Sets round flag so player does damage first.
+        return turn
+
+def player_attack(player_damage, number_monsters, total_monster_hp, monster_armor, stance):
+    new_damage = player_damage    
+    new_damage += dwarf[4] - monster_armor #Damage equals char damage - monster armor.
+        
+    if stance == "Aggressive": #Aggressive adds the character strength to the damage.
+        stance_damage = dwarf[1] 
+    elif stance == "Balanced": #Balanced adds the character dexterity/4 to the damage.
+        stance_damage = dwarf[2] / 4
+    elif stance == "Defensive": #Defensive adds the difference of the characters str and dex to the total damage.
+        stance_damage = dwarf[1] - dwarf[2]
+        
+    new_damage += stance_damage #Adds/subtracts stance damage to new_damage.
+    min_monster_hp = total_monster_hp / number_monsters #Builds benchmark for min damage to kill monster.
+    print("Testing min_monster_hp var.")
+    print(min_monster_hp)
+    input()
+    
+    while new_damage >= min_monster_hp:
+        number_monsters -= 1
+        new_damage -= min_monster_hp
+        total_monster_hp -= min_monster_hp
+        if number_monsters <= 0:
+                break
+        
+    if new_damage < min_monster_hp:
+        new_values = [new_damage, number_monsters, total_monster_hp]
+        return new_values
+
+
+def monster_attack(monster_damage, player_armor, player_hp, stance):
+    if stance == "Defensive":
+        monster_damage -= player_armor * 2
+    else:
+        monster_damage -= player_armor
+    if monster_damage <= 0:
+        print("The Kobolds attack doing", monster_damage, "damage!")
+        print("You take no damage from the attack.")
+        return player_hp
+    else:
+        player_hp -= monster_damage
+        print("The Kobolds attack doing", monster_damage, "damage!")
+        print("You have", player_hp, "health left.")
+        if player_hp <= 0:
+            input("You have perished in combat!\n\nPress enter to continue.")
+            exit()
+        else:
+            return player_hp
+    
+
+def combat():
+    #monsters: [num, str, dex, int, dam, arm, hp]
+    monsters = ["0", "0", "0", "0", "0", "0", "0"]
+    stat_modder(monsters, 1, 1, 4)
+    print("Prepare yourself, you see", monsters[0], "Kobolds charging at you!")
+    stance = ["Balanced"] #Sets the initial stance.
+    player_damage_counter = 0 #Keeps track of how much damage the player does.
+    current_player_hp = dwarf[7]    
+    while monsters[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
+        stance = stance_set(stance) #Allows the player to change their stance before each round of combat.
+        turn = initiative(monsters) #Rolls for initiative to see who goes first.
+        check_move = 1 #Flag that notifies loop that player has or has not gone.
+        if turn == 1:
+            result = player_attack(player_damage_counter, monsters[0], monsters[6], monsters[5], stance[0])
+            input(result)
+            player_damage_counter = result[0] #Updates total player damage. 
+            monsters[0] -= result[1] #Updates monsters left.
+            monsters[6] -= result[2] #Updates total monster HP.
+            print("You have slain", result[1], "Kobolds this round! There are", monsters[0], "left.")
+            if monsters[0] <= 0:
+                print("You have slain all the Kobolds!")
+                print("Congradulations!")
+                break
+            turn = 2
+            check_move = 0 #lets loop know player has already moved this round.
+                
+        elif turn == 2:
+            current_player_hp = monster_attack(monsters[4], dwarf[5], current_player_hp, stance)
+            print("Test:: player hp =", current_player_hp)
+            input()
+            
+        if check_move == 1:
+            result = player_attack(player_damage_counter, monsters[0], monsters[6], monsters[5], stance[0])
+            player_damage_counter = result[0] #Updates total player damage. 
+            monsters[0] -= result[1] #Updates monsters left.
+            monsters[6] -= result[2] #Updates total monster HP.
+            print("You have slain", result[1], "Kobolds this round! There are", monsters[0], "left.")
+            if monsters[0] <= 0:
+                print("You have slain all the Kobolds!")
+                print("Congradulations!")
+                break
+                    
+                
+                    
+                    
+        input("Stuff goes here (end of combat loop)")
         
         
 #------MAIN LOOP------#
@@ -265,6 +413,6 @@ while main == 'new':
     if spend == "y":
             shop()
     print("Prepare for combat!")
-    wave_combat()
+    combat()
     
     break
