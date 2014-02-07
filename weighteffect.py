@@ -5,7 +5,7 @@
 #
 
 print("\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\")
-print("\\ \\ \\ \\ Weight Effect \\ \\ \\ \\")
+print("\\ \\ \\ \\ \\Weight Effect \\ \\ \\ \\ \\")
 print("\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\")
 print("\nBy Paul & John Ashby")
 
@@ -77,17 +77,17 @@ def magic(command):
 
     if(command == 'read dark tome'):#Boom, long slippery slope baby...
         print("""As you brush the dust from the cover of the dark tome,
-        a chill runs up your arm. A glance down reveals the title,
-        'Meditations on the Unseen Worlds'. You slowly open the 
-        book and begin to read...""")
+a chill runs up your arm. A glance down reveals the title,
+'Meditations on the Unseen Worlds'. You slowly open the
+book and begin to read...""")
 
         print("""It seems to be a journal written by a scholar detailing his
-        exploration of these supposed unseen worlds. He goes into great
-        detail in his methods and you think you could replicate his
-        work. """)
+exploration of these supposed unseen worlds. He goes into great
+detail in his methods and you think you could replicate his
+work. """)
 
         path = input("""Do you stop reading?
-        (yes or no):> """)        
+(yes or no):> """)
 
         if(path == 'yes'):
             print("Scoffing at the madman's claims, you toss the book to the side.")
@@ -111,7 +111,7 @@ def magic(command):
             elif(15 < stat < 30):
                 print("You think your Concentration is average.")
             else:
-                print("You think your Concentration is great!") 
+                print("You think your Concentration is great!")
 
 
 def shop_commands():#Lists all the commands for the shopping loop.
@@ -217,7 +217,7 @@ def command():
         services = [1, 1, 0, 0] #Index 0 is a bedroll, 1 is the shop, 2 is the tome, and 3 is a beer seller
         time_left = 2
         
-        print("The camp is a low, cramped room off of the kobold tunnels.") 
+        print("The camp is a low, cramped room off of the kobold tunnels.")
         
         if(services[0] == 1):
                 print("You see a drab straw bedroll shoved in the corner.")
@@ -301,7 +301,7 @@ def initiative(monsters):
 def player_attack(player_damage, number_monsters, total_monster_hp, monster_armor, stance):
     new_damage = round(player_damage + random.randint(1, 10))
     #test print
-    print("new_damage1 line 304 (expect 0 initially)", new_damage)
+    print("new_damage1 line 304 (expect 1 - 10 initially)", new_damage)
     input()
 
     monster_deaths = 0
@@ -312,7 +312,7 @@ def player_attack(player_damage, number_monsters, total_monster_hp, monster_armo
     input()
     
     if stance == "Aggressive": #Aggressive adds the character strength to the damage.
-        stance_damage = dwarf[1] 
+        stance_damage = dwarf[1]
     elif stance == "Balanced": #Balanced adds the character dexterity/4 to the damage.
         stance_damage = round(dwarf[2] / 4)
     elif stance == "Defensive": #Defensive adds the difference of the characters str and dex to the total damage.
@@ -331,7 +331,7 @@ def player_attack(player_damage, number_monsters, total_monster_hp, monster_armo
     print("min_monster_hp line 329", min_monster_hp)
     input()
 
-    while new_damage >= min_monster_hp:
+    while new_damage >= min_monster_hp and number_monsters > 0:
         number_monsters -= 1
         monster_deaths += 1 #Used to subtract from total monsters.
         #Test print
@@ -347,7 +347,7 @@ def player_attack(player_damage, number_monsters, total_monster_hp, monster_armo
         print("total_monster_hp remaining? (line 343) ", total_monster_hp)
         input()
         
-    if new_damage < min_monster_hp:
+    if number_monsters <= 0 or new_damage < min_monster_hp:
         new_values = [new_damage, monster_deaths, total_monster_hp]
         return new_values
 
@@ -386,7 +386,7 @@ def combat():
     stance = ["Balanced"] #Sets the initial stance.
     player_damage_counter = 0 #Keeps track of how much damage the player does.
     current_player_hp = dwarf[7]
-    new_loot = random.randint(15 * monsters[0], 30 * monsters[0])
+    new_loot = random.randint(15 * monsters[0] * wave, 30 * monsters[0] * wave)
     #Test print
     #print("new_loot (line 378)", new_loot)
     #input()
@@ -398,10 +398,10 @@ def combat():
         if turn == 1:
             result = player_attack(player_damage_counter, monsters[0], monsters[6], monsters[5], stance[0])
             #test print
-            print("result list (line 388)", result)
+            print("result list (line 401)", result)
             input()
             
-            player_damage_counter = result[0] #Updates total player damage. 
+            player_damage_counter = result[0] #Updates total player damage.
             monsters[0] -= result[1] #Updates monsters left.
             monsters[6] = result[2] #Updates total monster HP.
             print("You have slain", result[1], "Kobolds this round! There are", monsters[0], "left.")
@@ -423,7 +423,11 @@ def combat():
             
         if check_move == 1:
             result = player_attack(player_damage_counter, monsters[0], monsters[6], monsters[5], stance[0])
-            player_damage_counter = result[0] #Updates total player damage. 
+            #test print
+            print("checking result (second 'if') (line 427)", result)
+            input()
+            
+            player_damage_counter = result[0] #Updates total player damage.
             monsters[0] -= result[1] #Updates monsters left.
             monsters[6] = result[2] #Updates total monster HP.
             print("You have slain", result[1], "Kobolds this round! There are", monsters[0], "left.")
@@ -463,4 +467,3 @@ while True:
         loot()
         wave += 1
         command()
-
