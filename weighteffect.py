@@ -1,4 +1,4 @@
-#Copywrite (c) Paul & John Ashby 2014
+#Copyright (c) Paul & John Ashby 2014
 #Weight Effect
 #This game is an RPG that is designed by my brother and myself (Paul).
 #We built this to explore python programing, open source github, and to have some fun.
@@ -22,7 +22,7 @@ wave = 1
 #------Defined Lists------#
 
 #dwarf: [name, str, dex, int, dam, arm, pot, hp, gold]
-dwarf = [ 0,  0,  0,  0,  0,  0,  0,  0,  0]
+dwarf = [ 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 
 #------Defined Functions------#
@@ -37,6 +37,7 @@ def char_inventory():#Prints out the stats of the player.
               "\nPotions:", dwarf[6],
               "\nHP:", dwarf[7],
               "\nGold:", dwarf[8])
+
 
 def stat_modder(x, y, z, a):
 #x is the stat list, y is the stat location,
@@ -60,15 +61,16 @@ def stat_modder(x, y, z, a):
         stat[y] = z
     
     elif(a == 4): #A 4 value for A means generate stats for a monster wave.
-        stat[0] = random.randint((2 * wave), (4 * wave))
+        stat[0] = random.randint((2 * wave), (4 * wave)) #Determines the amount monsters in a wave.
         for i in range(1, 5):
-                stat[i] = random.randint((5 + wave), (15 + wave))
-        stat[5] = random.randint((3 + wave), (12 + wave))
-        stat[6] = random.randint((10 * wave * stat[0]), (25 * wave * stat[0]))
+                stat[i] = random.randint((5 * wave), (15 * wave)) #Generates the monsters stats.
+        stat[5] = random.randint((3 * wave), (12 * wave)) #Generates monster
+        stat[6] = random.randint((10 * wave * stat[0]), (25 * wave * stat[0])) #Generates the monsters health.
     
     else:
         print('Burn the heretic')
     return stat
+
 
 def magic(command):
     #Stats are as follows, 0=Self Knowledge, 1=Will, 2=Concentration 3=Lore
@@ -77,17 +79,17 @@ def magic(command):
 
     if(command == 'read dark tome'):#Boom, long slippery slope baby...
         print("""As you brush the dust from the cover of the dark tome,
-a chill runs up your arm. A glance down reveals the title,
-'Meditations on the Unseen Worlds'. You slowly open the
-book and begin to read...""")
+        a chill runs up your arm. A glance down reveals the title,
+        'Meditations on the Unseen Worlds'. You slowly open the
+        book and begin to read...""")
 
         print("""It seems to be a journal written by a scholar detailing his
-exploration of these supposed unseen worlds. He goes into great
-detail in his methods and you think you could replicate his
-work. """)
+        exploration of these supposed unseen worlds. He goes into great
+        detail in his methods and you think you could replicate his
+        work. """)
 
         path = input("""Do you stop reading?
-(yes or no):> """)
+        (yes or no):> """)
 
         if(path == 'yes'):
             print("Scoffing at the madman's claims, you toss the book to the side.")
@@ -205,10 +207,9 @@ def shop():
                                                 input("No purchase made, press enter to continue.")
                                         else:
                                             del dwarf[6]
-                                            dwarf.insert(6, numberPotions)
+                                            dwarf[6] += numberPotions
                                             posEight -= (cost * numberPotions)
-                                            del dwarf[8]
-                                            dwarf.insert(8, posEight)
+                                            dwarf[8] = posEight
                                         char_inventory()
 
 
@@ -438,7 +439,7 @@ def combat(current_player_hp):
                 input("\nPress enter to continue.")
                 break
             
-    return current_player_hp 
+    return current_player_hp
                     
 
 def loot(current_player_hp):
@@ -457,7 +458,7 @@ def loot(current_player_hp):
             print("Good luck then.")
             return current_player_hp
     else:
-        input("Unfortunantly you don't have any potions to restore your health.\nPress enter to continue.")
+        input("Unfortunantely you don't have any potions to restore your health.\nPress enter to continue.")
         return current_player_hp
         
                 
@@ -471,11 +472,11 @@ while True:
                 print("Generating stats for your dwarf!")
                 stat_modder(dwarf, 1, 1, 1)
                 char_inventory()
-                reroll = input("Do you want to reroll your character? (y/n)\n:> ")
+                reroll = input("Do you want to re-roll your character? (y/n)\n:> ")
                 if reroll == "n":
                     break
                 else:
-                    print("You can reroll your dwarf", 5 - (i + 1), "more times.")
+                    print("You can re-roll your dwarf", 5 - (i + 1), "more times.")
             current_player_hp = dwarf[7]
         main = 'end'
         spend = input("Do you want to go to a shop before you fight endless waves of monsters?\n(y/n)\n:> ")
