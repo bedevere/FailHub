@@ -22,7 +22,7 @@ wave = 1
 #------Defined Lists------#
 
 #dwarf: [name, str, dex, int, dam, arm, pot, hp, gold]
-dwarf = ["0", "0", "0", "0", "0", "0", "0", "0", "0"]
+dwarf = [ 0,  0,  0,  0,  0,  0,  0,  0,  0]
 
 
 #------Defined Functions------#
@@ -217,7 +217,7 @@ def command():
         services = [1, 1, 0, 0] #Index 0 is a bedroll, 1 is the shop, 2 is the tome, and 3 is a beer seller
         time_left = 2
         
-        print("The camp is a low, cramped room off of the kobold tunnels.")
+        print("\n\nThe camp is a low, cramped room off of the kobold tunnels.")
         
         if(services[0] == 1):
                 print("You see a drab straw bedroll shoved in the corner.")
@@ -286,7 +286,7 @@ def stance_set(oldstance): #takes an argument from previous function and names i
 def initiative(monsters):
     monster_initiative = random.randint(1 + monsters[2], 20 + monsters[2])
     player_initiative = random.randint(1 + dwarf[2], 20 + dwarf[2])
-    print("Rolling initiative!")
+    print("\nRolling initiative!")
     print("\nYou rolled a",player_initiative, "and the Kobolds rolled a", monster_initiative)
     if monster_initiative >= player_initiative:
         print("Looks like the Kobolds are attacking first, brace yourself.")
@@ -375,18 +375,17 @@ def monster_attack(monster_damage, player_armor, player_hp, stance):
             return player_hp
     
 
-def combat():
+def combat(current_player_hp):
     #monsters: [num, str, dex, int, dam, arm, hp]
     monsters = ["0", "0", "0", "0", "0", "0", "0"]
     stat_modder(monsters, 1, 1, 4)
     #Test print
     print("monsters (line 379)", monsters)
     
-    print("Prepare yourself, you see", monsters[0], "Kobolds charging at you!")
+    print("\n\nPrepare yourself, you see", monsters[0], "Kobolds charging at you!")
     stance = ["Balanced"] #Sets the initial stance.
     player_damage_counter = 0 #Keeps track of how much damage the player does.
-    current_player_hp = dwarf[7]
-    new_loot = random.randint(15 * monsters[0] * wave, 30 * monsters[0] * wave)
+    new_loot = random.randint(50 * monsters[0] * wave, 100 * monsters[0] * wave)
     #Test print
     #print("new_loot (line 378)", new_loot)
     #input()
@@ -438,11 +437,30 @@ def combat():
                 print("You loot", new_loot, "gold from the slain kobolds.")
                 input("\nPress enter to continue.")
                 break
+            
+    return current_player_hp 
                     
 
-def loot():
-        print("\nYou will be able to get loot eventually.")
+def loot(current_player_hp):
+    print("\nYou have", current_player_hp, "health remaining.")
+    print("You have", dwarf[6], "health potions remaining.")
+    if dwarf[6] > 0:
+        print("Do you want to use a health potion to restore your HP?\n(y,n)\n:>")
+        use = input()
+        if use == "y":
+            dwarf[6] -= 1
+            current_player_hp = dwarf[7]
+            print("You have regained your health after drinking a potion.")
+            print("You have", dwarf[7], "health and", dwarf[6], "potions remaining.")
+            return current_player_hp
+        else:
+            print("Good luck then.")
+            return current_player_hp
+    else:
+        input("Unfortunantly you don't have any potions to restore your health.\nPress enter to continue.")
+        return current_player_hp
         
+                
         
 #------MAIN LOOP------#
 while True:
@@ -458,12 +476,13 @@ while True:
                     break
                 else:
                     print("You can reroll your dwarf", 5 - (i + 1), "more times.")
+            current_player_hp = dwarf[7]
         main = 'end'
         spend = input("Do you want to go to a shop before you fight endless waves of monsters?\n(y/n)\n:> ")
         if spend == "y":
             shop()
         print("Prepare for combat!")
-        combat()
-        loot()
+        current_player_hp = combat(current_player_hp)
+        loot(current_player_hp)
         wave += 1
         command()
