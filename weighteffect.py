@@ -301,15 +301,15 @@ def initiative(monsters):
 def player_attack(player_damage, number_monsters, total_monster_hp, monster_armor, stance):
     new_damage = round(player_damage + random.randint(1, 10))
     #test print
-    print("new_damage1 line 304 (expect 1 - 10 initially)", new_damage)
-    input()
+    #print("new_damage1 line 304 (expect 1 - 10 initially)", new_damage)
+    #input()
 
     monster_deaths = 0
     
     new_damage += round(dwarf[4] - monster_armor) #Damage equals char damage - monster armor.
     #test print
-    print("new_damage2 line 309", new_damage)
-    input()
+    #print("new_damage2 line 309", new_damage)
+    #input()
     
     if stance == "Aggressive": #Aggressive adds the character strength to the damage.
         stance_damage = dwarf[1]
@@ -318,34 +318,34 @@ def player_attack(player_damage, number_monsters, total_monster_hp, monster_armo
     elif stance == "Defensive": #Defensive adds the difference of the characters str and dex to the total damage.
         stance_damage = round(dwarf[1] - dwarf[2])
     #test print
-    print("stance_damage line 319", stance_damage)
-    input()
+    #print("stance_damage line 319", stance_damage)
+    #input()
     
     new_damage += stance_damage #Adds/subtracts stance damage to new_damage.
     #test print
-    print("new_damage3 line 324", new_damage)
-    input()
+    #print("new_damage3 line 324", new_damage)
+    #input()
     
     min_monster_hp = round(total_monster_hp / number_monsters) #Builds benchmark for min damage to kill monster.
     #test print
-    print("min_monster_hp line 329", min_monster_hp)
-    input()
+    #print("min_monster_hp line 329", min_monster_hp)
+    #input()
 
     while new_damage >= min_monster_hp and number_monsters > 0:
         number_monsters -= 1
         monster_deaths += 1 #Used to subtract from total monsters.
         #Test print
-        print("Number of monsters left? ", number_monsters)
-        print("Number of monsters killed?", monster_deaths)
+        #print("Number of monsters left? ", number_monsters)
+        #print("Number of monsters killed?", monster_deaths)
         input()
         new_damage -= min_monster_hp
         #Test print
-        print("new_damage remaining? (line 339)", new_damage)
-        input()
+        #print("new_damage remaining? (line 339)", new_damage)
+        #input()
         total_monster_hp -= min_monster_hp
         #Test print
-        print("total_monster_hp remaining? (line 343) ", total_monster_hp)
-        input()
+        #print("total_monster_hp remaining? (line 343) ", total_monster_hp)
+        #input()
         
     if number_monsters <= 0 or new_damage < min_monster_hp:
         new_values = [new_damage, monster_deaths, total_monster_hp]
@@ -380,7 +380,7 @@ def combat(current_player_hp):
     monsters = ["0", "0", "0", "0", "0", "0", "0"]
     stat_modder(monsters, 1, 1, 4)
     #Test print
-    print("monsters (line 379)", monsters)
+    #print("monsters (line 379)", monsters)
     
     print("\n\nPrepare yourself, you see", monsters[0], "Kobolds charging at you!")
     stance = ["Balanced"] #Sets the initial stance.
@@ -397,8 +397,8 @@ def combat(current_player_hp):
         if turn == 1:
             result = player_attack(player_damage_counter, monsters[0], monsters[6], monsters[5], stance[0])
             #test print
-            print("result list (line 401)", result)
-            input()
+            #print("result list (line 401)", result)
+            #input()
             
             player_damage_counter = result[0] #Updates total player damage.
             monsters[0] -= result[1] #Updates monsters left.
@@ -423,8 +423,8 @@ def combat(current_player_hp):
         if check_move == 1:
             result = player_attack(player_damage_counter, monsters[0], monsters[6], monsters[5], stance[0])
             #test print
-            print("checking result (second 'if') (line 427)", result)
-            input()
+            #print("checking result (second 'if') (line 427)", result)
+            #input()
             
             player_damage_counter = result[0] #Updates total player damage.
             monsters[0] -= result[1] #Updates monsters left.
