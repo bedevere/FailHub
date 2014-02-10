@@ -1,4 +1,4 @@
-#Copyright (c) Paul & John Ashby 2014
+#Copywrite (c) Paul & John Ashby 2014
 #Weight Effect
 #This game is an RPG that is designed by my brother and myself (Paul).
 #We built this to explore python programing, open source github, and to have some fun.
@@ -201,12 +201,11 @@ def shop():
                                         if numberPotions > store_inventory[2]:
                                                 print("THERE ARE NOT THAT MANY POTIONS IN THE STORE!")
                                                 input("Press enter to go back to the shop menu.")
-                                        posEight = int(dwarf[8])
+                                        posEight = dwarf[8]
                                         if posEight < (cost * numberPotions):
                                                 print("YOU DON'T HAVE THAT KIND OF MONEY!")
                                                 input("No purchase made, press enter to continue.")
                                         else:
-                                            del dwarf[6]
                                             dwarf[6] += numberPotions
                                             posEight -= (cost * numberPotions)
                                             dwarf[8] = posEight
@@ -380,6 +379,7 @@ def combat(current_player_hp):
     #monsters: [num, str, dex, int, dam, arm, hp]
     monsters = ["0", "0", "0", "0", "0", "0", "0"]
     stat_modder(monsters, 1, 1, 4)
+    num_monsters = monsters[0] #Saving the number of monsters for the stat_adder.
     #Test print
     #print("monsters (line 379)", monsters)
     
@@ -438,11 +438,12 @@ def combat(current_player_hp):
                 print("You loot", new_loot, "gold from the slain kobolds.")
                 input("\nPress enter to continue.")
                 break
-            
+
+    stat_adder(num_monsters)
     return current_player_hp
                     
 
-def loot(current_player_hp):
+def potion(current_player_hp):
     print("\nYou have", current_player_hp, "health remaining.")
     print("You have", dwarf[6], "health potions remaining.")
     if dwarf[6] > 0:
@@ -460,8 +461,45 @@ def loot(current_player_hp):
     else:
         input("Unfortunantely you don't have any potions to restore your health.\nPress enter to continue.")
         return current_player_hp
-        
+
+
+def stat_adder(num_monsters):
+        print("You have gained enough experience improve one of your stats.")
+        print("\nEnter the number that coorosponds to the stat you want to modify.",
+              "\n(1) Strength",
+              "\n(2) Dexterity",
+              "\n(3) Inteligence")
+        stat = int(input())
+        if stat == 1:
+                str_bonus = random.randint(1 + num_monsters, 6 + num_monsters)
+                #testprint
+                print("strength bonus:", str_bonus)
+                input()
+
+                dwarf[1] += str_bonus
+                dwarf[7] += str_bonus
+                print("\nYou have increased your strength and HP by", str_bonus,)
+                input("Press enter to continue.")
+        elif stat == 2:
+                dex_bonus = random.randint(1 + num_monsters, 6 + num_monsters)
+                #testprint
+                print("Dex bonus:", dex_bonus)
+                input()
+
+                dwarf[2] += dex_bonus
+                print("\nYou have increased your dexterity by", dex_bonus)
+                input("Press enter to continue.")
+        elif stat == 3:
+                int_bonus = random.randint(1 + num_monsters, 6 + num_monsters)
+                #testprint
+                print("Inteligence bonus:", int_bonus)
+                input()
+
+                dwarf[3] += int_bonus
+                print("\nYou have increased inteligence by", int_bonus)
+                input("Press enter to continue.")
                 
+        char_inventory()
         
 #------MAIN LOOP------#
 while True:
@@ -484,6 +522,6 @@ while True:
             shop()
         print("Prepare for combat!")
         current_player_hp = combat(current_player_hp)
-        loot(current_player_hp)
+        current_player_hp = potion(current_player_hp)
         wave += 1
         command()
