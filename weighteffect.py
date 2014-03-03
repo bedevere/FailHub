@@ -1,6 +1,6 @@
 #Copywrite (c) Paul & John Ashby 2014
 #Weight Effect
-#This game is an RPG that is designed by my brother and myself (Paul).
+#This game is an RPG that is designed by my brother (John) and myself (Paul).
 #We built this to explore python programing, open source github, and to have some fun.
 #
 
