@@ -1,11 +1,11 @@
 #Copywrite (c) Paul & John Ashby 2014
 #Weight Effect
-#This game is an RPG that is designed by my brother and myself (Paul).
+#This game is an RPG that is designed by my brother (John) and myself (Paul).
 #We built this to explore python programing, open source github, and to have some fun.
 #
 
 print("\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\")
-print("\\ \\ \\ \\ Weight Effect \\ \\ \\ \\")
+print("\\ \\ \\ \\ \\Weight Effect \\ \\ \\ \\ \\")
 print("\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\")
 print("\nBy Paul & John Ashby")
 
@@ -22,7 +22,7 @@ wave = 1
 #------Defined Lists------#
 
 #dwarf: [name, str, dex, int, dam, arm, pot, hp, gold]
-dwarf = ["0", "0", "0", "0", "0", "0", "0", "0", "0"]
+dwarf = [ 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 
 #------Defined Functions------#
@@ -37,6 +37,7 @@ def char_inventory():#Prints out the stats of the player.
               "\nPotions:", dwarf[6],
               "\nHP:", dwarf[7],
               "\nGold:", dwarf[8])
+
 
 def stat_modder(x, y, z, a):
 #x is the stat list, y is the stat location,
@@ -60,15 +61,16 @@ def stat_modder(x, y, z, a):
         stat[y] = z
     
     elif(a == 4): #A 4 value for A means generate stats for a monster wave.
-        stat[0] = random.randint((2 * wave), (4 * wave))
+        stat[0] = random.randint((2 * wave), (4 * wave)) #Determines the amount monsters in a wave.
         for i in range(1, 5):
-                stat[i] = random.randint((5 + wave), (15 + wave))
-        stat[5] = random.randint((3 + wave), (12 + wave))
-        stat[6] = random.randint((10 * wave * stat[0]), (25 * wave * stat[0]))
+                stat[i] = random.randint((5 * wave), (15 * wave)) #Generates the monsters stats.
+        stat[5] = random.randint((3 * wave), (12 * wave)) #Generates monster
+        stat[6] = random.randint((10 * wave * stat[0]), (25 * wave * stat[0])) #Generates the monsters health.
     
     else:
         print('Burn the heretic')
     return stat
+
 
 def magic(command):
     #Stats are as follows, 0=Self Knowledge, 1=Will, 2=Concentration 3=Lore
@@ -78,7 +80,7 @@ def magic(command):
     if(command == 'read dark tome'):#Boom, long slippery slope baby...
         print("""As you brush the dust from the cover of the dark tome,
         a chill runs up your arm. A glance down reveals the title,
-        'Meditations on the Unseen Worlds'. You slowly open the 
+        'Meditations on the Unseen Worlds'. You slowly open the
         book and begin to read...""")
 
         print("""It seems to be a journal written by a scholar detailing his
@@ -87,7 +89,7 @@ def magic(command):
         work. """)
 
         path = input("""Do you stop reading?
-        (yes or no):> """)        
+        (yes or no):> """)
 
         if(path == 'yes'):
             print("Scoffing at the madman's claims, you toss the book to the side.")
@@ -111,7 +113,7 @@ def magic(command):
             elif(15 < stat < 30):
                 print("You think your Concentration is average.")
             else:
-                print("You think your Concentration is great!") 
+                print("You think your Concentration is great!")
 
 
 def shop_commands():#Lists all the commands for the shopping loop.
@@ -129,7 +131,7 @@ def shop():
         store_inventory.append(random.randint(1, 18) * wave) #Generates a random value armor.
         store_inventory.append(random.randint(1, 6) * wave) #Generates a random number of potions.
         print("WELCOME TO YE OLD LOCAL SHOPPE")
-        print("Our current inventory consists of the following items:")
+        print("\nOur current inventory consists of the following items:")
         print("An axe that can do", store_inventory[0], "damage.")
         print("A set of armor that protects against", store_inventory[1], "points of damage.")
         print("We also have", store_inventory[2], "health potion(s).")
@@ -199,16 +201,14 @@ def shop():
                                         if numberPotions > store_inventory[2]:
                                                 print("THERE ARE NOT THAT MANY POTIONS IN THE STORE!")
                                                 input("Press enter to go back to the shop menu.")
-                                        posEight = int(dwarf[8])
+                                        posEight = dwarf[8]
                                         if posEight < (cost * numberPotions):
                                                 print("YOU DON'T HAVE THAT KIND OF MONEY!")
                                                 input("No purchase made, press enter to continue.")
                                         else:
-                                            del dwarf[6]
-                                            dwarf.insert(6, numberPotions)
+                                            dwarf[6] += numberPotions
                                             posEight -= (cost * numberPotions)
-                                            del dwarf[8]
-                                            dwarf.insert(8, posEight)
+                                            dwarf[8] = posEight
                                         char_inventory()
 
 
@@ -217,7 +217,7 @@ def command():
         services = [1, 1, 0, 0] #Index 0 is a bedroll, 1 is the shop, 2 is the tome, and 3 is a beer seller
         time_left = 2
         
-        print("The camp is a low, cramped room off of the kobold tunnels.") 
+        print("\n\nThe camp is a low, cramped room off of the kobold tunnels.")
         
         if(services[0] == 1):
                 print("You see a drab straw bedroll shoved in the corner.")
@@ -267,7 +267,7 @@ def stance_set(oldstance): #takes an argument from previous function and names i
         "\n(2) - Balanced (no combat penalties)",
         "\n(3) - Defensive (increased armor, decreased attack)")
         
-        newstance_number = int(input("Enter the number that coorosponds to your choice and press enter.\n:> "))
+        newstance_number = int(input("Enter the number that corresponds to your choice and press enter.\n:> "))
         
         if newstance_number == 1:
             newstance = ["Aggressive"]
@@ -286,7 +286,7 @@ def stance_set(oldstance): #takes an argument from previous function and names i
 def initiative(monsters):
     monster_initiative = random.randint(1 + monsters[2], 20 + monsters[2])
     player_initiative = random.randint(1 + dwarf[2], 20 + dwarf[2])
-    print("Rolling initiative!")
+    print("\nRolling initiative!")
     print("\nYou rolled a",player_initiative, "and the Kobolds rolled a", monster_initiative)
     if monster_initiative >= player_initiative:
         print("Looks like the Kobolds are attacking first, brace yourself.")
@@ -299,47 +299,75 @@ def initiative(monsters):
         return turn
 
 def player_attack(player_damage, number_monsters, total_monster_hp, monster_armor, stance):
-    new_damage = player_damage    
-    new_damage += dwarf[4] - monster_armor #Damage equals char damage - monster armor.
-        
-    if stance == "Aggressive": #Aggressive adds the character strength to the damage.
-        stance_damage = dwarf[1] 
-    elif stance == "Balanced": #Balanced adds the character dexterity/4 to the damage.
-        stance_damage = dwarf[2] / 4
-    elif stance == "Defensive": #Defensive adds the difference of the characters str and dex to the total damage.
-        stance_damage = dwarf[1] - dwarf[2]
-        
-    new_damage += stance_damage #Adds/subtracts stance damage to new_damage.
-    min_monster_hp = total_monster_hp / number_monsters #Builds benchmark for min damage to kill monster.
-    print("Testing min_monster_hp var.")
-    print(min_monster_hp)
-    input()
+    new_damage = round(player_damage + random.randint(1, 10))
+    #test print
+    #print("new_damage1 line 304 (expect 1 - 10 initially)", new_damage)
+    #input()
+
+    monster_deaths = 0
     
-    while new_damage >= min_monster_hp:
+    new_damage += round(dwarf[4] - monster_armor) #Damage equals char damage - monster armor.
+    #test print
+    #print("new_damage2 line 309", new_damage)
+    #input()
+    
+    if stance == "Aggressive": #Aggressive adds the character strength to the damage.
+        stance_damage = dwarf[1]
+    elif stance == "Balanced": #Balanced adds the character dexterity/4 to the damage.
+        stance_damage = round(dwarf[2] / 4)
+    elif stance == "Defensive": #Defensive adds the difference of the characters str and dex to the total damage.
+        stance_damage = round(dwarf[1] - dwarf[2])
+    #test print
+    #print("stance_damage line 319", stance_damage)
+    #input()
+    
+    new_damage += stance_damage #Adds/subtracts stance damage to new_damage.
+    #test print
+    #print("new_damage3 line 324", new_damage)
+    #input()
+    
+    min_monster_hp = round(total_monster_hp / number_monsters) #Builds benchmark for min damage to kill monster.
+    #test print
+    #print("min_monster_hp line 329", min_monster_hp)
+    #input()
+
+    while new_damage >= min_monster_hp and number_monsters > 0:
         number_monsters -= 1
+        monster_deaths += 1 #Used to subtract from total monsters.
+        #Test print
+        #print("Number of monsters left? ", number_monsters)
+        #print("Number of monsters killed?", monster_deaths)
+        input()
         new_damage -= min_monster_hp
+        #Test print
+        #print("new_damage remaining? (line 339)", new_damage)
+        #input()
         total_monster_hp -= min_monster_hp
-        if number_monsters <= 0:
-                break
+        #Test print
+        #print("total_monster_hp remaining? (line 343) ", total_monster_hp)
+        #input()
         
-    if new_damage < min_monster_hp:
-        new_values = [new_damage, number_monsters, total_monster_hp]
+    if number_monsters <= 0 or new_damage < min_monster_hp:
+        new_values = [new_damage, monster_deaths, total_monster_hp]
         return new_values
 
 
 def monster_attack(monster_damage, player_armor, player_hp, stance):
+    monster_damage += (random.randint(1 + wave, 10 + wave))
     if stance == "Defensive":
-        monster_damage -= player_armor * 2
+        monster_damage -= round(player_armor * 2)
     else:
         monster_damage -= player_armor
     if monster_damage <= 0:
-        print("The Kobolds attack doing", monster_damage, "damage!")
+        print("\nThe Kobolds attack doing", monster_damage, "damage!")
         print("You take no damage from the attack.")
+        input("\nPress enter to continue.")
         return player_hp
     else:
         player_hp -= monster_damage
-        print("The Kobolds attack doing", monster_damage, "damage!")
+        print("\nThe Kobolds attack doing", monster_damage, "damage!")
         print("You have", player_hp, "health left.")
+        input("Press enter to continue.")
         if player_hp <= 0:
             input("You have perished in combat!\n\nPress enter to continue.")
             exit()
@@ -347,72 +375,153 @@ def monster_attack(monster_damage, player_armor, player_hp, stance):
             return player_hp
     
 
-def combat():
+def combat(current_player_hp):
     #monsters: [num, str, dex, int, dam, arm, hp]
     monsters = ["0", "0", "0", "0", "0", "0", "0"]
     stat_modder(monsters, 1, 1, 4)
-    print("Prepare yourself, you see", monsters[0], "Kobolds charging at you!")
+    num_monsters = monsters[0] #Saving the number of monsters for the stat_adder.
+    #Test print
+    #print("monsters (line 379)", monsters)
+    
+    print("\n\nPrepare yourself, you see", monsters[0], "Kobolds charging at you!")
     stance = ["Balanced"] #Sets the initial stance.
     player_damage_counter = 0 #Keeps track of how much damage the player does.
-    current_player_hp = dwarf[7]    
+    new_loot = random.randint(50 * monsters[0] * wave, 100 * monsters[0] * wave)
+    #Test print
+    #print("new_loot (line 378)", new_loot)
+    #input()
+    
     while monsters[0] > 0 and dwarf[7] > 0:#loops until all monsters are dead or the player dies.
         stance = stance_set(stance) #Allows the player to change their stance before each round of combat.
         turn = initiative(monsters) #Rolls for initiative to see who goes first.
         check_move = 1 #Flag that notifies loop that player has or has not gone.
         if turn == 1:
             result = player_attack(player_damage_counter, monsters[0], monsters[6], monsters[5], stance[0])
-            input(result)
-            player_damage_counter = result[0] #Updates total player damage. 
+            #test print
+            #print("result list (line 401)", result)
+            #input()
+            
+            player_damage_counter = result[0] #Updates total player damage.
             monsters[0] -= result[1] #Updates monsters left.
-            monsters[6] -= result[2] #Updates total monster HP.
+            monsters[6] = result[2] #Updates total monster HP.
             print("You have slain", result[1], "Kobolds this round! There are", monsters[0], "left.")
             if monsters[0] <= 0:
                 print("You have slain all the Kobolds!")
-                print("Congradulations!")
+                print("Congratulations!")
+                dwarf[8] += new_loot
+                print("You loot", new_loot, "gold from the slain kobolds.")
+                input("\nPress enter to continue.")
                 break
             turn = 2
             check_move = 0 #lets loop know player has already moved this round.
                 
-        elif turn == 2:
+        if turn == 2:
             current_player_hp = monster_attack(monsters[4], dwarf[5], current_player_hp, stance)
-            print("Test:: player hp =", current_player_hp)
-            input()
+            #test print
+            #print("current_player_hp line 405:", current_player_hp)
+            #input()
             
         if check_move == 1:
             result = player_attack(player_damage_counter, monsters[0], monsters[6], monsters[5], stance[0])
-            player_damage_counter = result[0] #Updates total player damage. 
+            #test print
+            #print("checking result (second 'if') (line 427)", result)
+            #input()
+            
+            player_damage_counter = result[0] #Updates total player damage.
             monsters[0] -= result[1] #Updates monsters left.
-            monsters[6] -= result[2] #Updates total monster HP.
+            monsters[6] = result[2] #Updates total monster HP.
             print("You have slain", result[1], "Kobolds this round! There are", monsters[0], "left.")
             if monsters[0] <= 0:
                 print("You have slain all the Kobolds!")
-                print("Congradulations!")
+                print("Congratulations!")
+                dwarf[8] += new_loot
+                print("You loot", new_loot, "gold from the slain kobolds.")
+                input("\nPress enter to continue.")
                 break
+
+    stat_adder(num_monsters)
+    return current_player_hp
                     
+
+def potion(current_player_hp):
+    print("\nYou have", current_player_hp, "health remaining.")
+    print("You have", dwarf[6], "health potions remaining.")
+    if dwarf[6] > 0:
+        print("Do you want to use a health potion to restore your HP?\n(y,n)\n:>")
+        use = input()
+        if use == "y":
+            dwarf[6] -= 1
+            current_player_hp = dwarf[7]
+            print("You have regained your health after drinking a potion.")
+            print("You have", dwarf[7], "health and", dwarf[6], "potions remaining.")
+            return current_player_hp
+        else:
+            print("Good luck then.")
+            return current_player_hp
+    else:
+        input("Unfortunantely you don't have any potions to restore your health.\nPress enter to continue.")
+        return current_player_hp
+
+
+def stat_adder(num_monsters):
+        print("You have gained enough experience improve one of your stats.")
+        print("\nEnter the number that coorosponds to the stat you want to modify.",
+              "\n(1) Strength",
+              "\n(2) Dexterity",
+              "\n(3) Inteligence")
+        stat = int(input())
+        if stat == 1:
+                str_bonus = random.randint(1 + num_monsters, 6 + num_monsters)
+                #testprint
+                print("strength bonus:", str_bonus)
+                input()
+
+                dwarf[1] += str_bonus
+                dwarf[7] += str_bonus
+                print("\nYou have increased your strength and HP by", str_bonus,)
+                input("Press enter to continue.")
+        elif stat == 2:
+                dex_bonus = random.randint(1 + num_monsters, 6 + num_monsters)
+                #testprint
+                print("Dex bonus:", dex_bonus)
+                input()
+
+                dwarf[2] += dex_bonus
+                print("\nYou have increased your dexterity by", dex_bonus)
+                input("Press enter to continue.")
+        elif stat == 3:
+                int_bonus = random.randint(1 + num_monsters, 6 + num_monsters)
+                #testprint
+                print("Inteligence bonus:", int_bonus)
+                input()
+
+                dwarf[3] += int_bonus
+                print("\nYou have increased inteligence by", int_bonus)
+                input("Press enter to continue.")
                 
-                    
-                    
-        input("Stuff goes here (end of combat loop)")
-        
+        char_inventory()
         
 #------MAIN LOOP------#
-while main == 'new':
-    for i in range(5): #This loop controls character creation.
-        name = input("What is the name of your dwarf?\n:> ")
-        stat_modder(dwarf, 0, name, 3)
-        print("Generating stats for your dwarf!")
-        stat_modder(dwarf, 1, 1, 1)
-        char_inventory()
-        reroll = input("Do you want to reroll your character? (y/n)\n:> ")
-        if reroll == "n":
-            break
-        else:
-            print("You can reroll your dwarf", 5 - (i + 1), "more times.")
-            
-    spend = input("Do you want to go to a shop before you fight endless waves of monsters?\n(y/n)\n:> ")
-    if spend == "y":
+while True:
+        if main == 'new':
+            for i in range(5): #This loop controls character creation.
+                name = input("What is the name of your dwarf?\n:> ")
+                stat_modder(dwarf, 0, name, 3)
+                print("Generating stats for your dwarf!")
+                stat_modder(dwarf, 1, 1, 1)
+                char_inventory()
+                reroll = input("Do you want to re-roll your character? (y/n)\n:> ")
+                if reroll == "n":
+                    break
+                else:
+                    print("You can re-roll your dwarf", 5 - (i + 1), "more times.")
+            current_player_hp = dwarf[7]
+        main = 'end'
+        spend = input("Do you want to go to a shop before you fight endless waves of monsters?\n(y/n)\n:> ")
+        if spend == "y":
             shop()
-    print("Prepare for combat!")
-    combat()
-    
-    break
+        print("Prepare for combat!")
+        current_player_hp = combat(current_player_hp)
+        current_player_hp = potion(current_player_hp)
+        wave += 1
+        command()
